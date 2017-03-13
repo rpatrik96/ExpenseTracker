@@ -1,0 +1,163 @@
+body 
+        {
+            margin: 0;
+        }
+/*********************************************************************************************/
+/*Navigation bar style*/
+/*********************************************************************************************/
+        ul.navbar
+        {
+            text-align: center;
+            font-family: Helvetica, sans-serif;
+            font-variant: small-caps;
+            font-weight: 700;
+            list-style-type: none;
+            margin-top: 80px;
+            padding: 0;
+            overflow: auto;
+            background-color: rgb(0, 28, 73);
+        }
+        ul.navbar li
+        {
+            float: left;
+        }
+
+        li a, .dropbtn
+        {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        ul.navbar li a:hover, .dropdown:hover .dropbtn
+        {
+            background-color: rgb(0, 52, 124);
+        }
+
+        li a.active, .dropdown-content
+        {
+            background-color: rgb(51, 111, 196);
+            
+        }
+        ul.navbar li.dropdown
+        {
+            display: block;
+        }
+
+        ul.navbar li.right
+        {
+            float: right;
+        }
+/*********************************************************************************************/
+/*Header*/
+/*********************************************************************************************/
+        .header
+        {
+            position: absolute;
+            float: right;
+            width: 100%;
+            top: 0px;
+            background-color: rgb(222, 222, 222);
+            text-align: center;
+            font-family: Helvetica, sans-serif;
+            font-variant: normal;
+            font-weight: 400;
+            margin-top: 0px;
+            padding: 8px 0px 8px 0px;
+            height: 64px;
+            text-align: right;
+            font-family: Helvetica, sans-serif;
+            font-variant: small-caps;
+            font-weight: 700;
+            font-size: 36px;
+            vertical-align: bottom; 
+        }
+        .bottomright 
+        {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+        }
+
+/*********************************************************************************************/
+/*Footer*/
+/*********************************************************************************************/
+        .footer
+        {
+            background-color: rgb(222, 222, 222);
+            text-align: center;
+            font-family: Helvetica, sans-serif;
+            font-variant: normal;
+            font-weight: 400;
+            margin-top: 20px;
+            padding: 8px;
+        }
+
+/*********************************************************************************************/
+/*Dropdown*/
+/*********************************************************************************************/
+        .dropdown-content
+        {
+            display: none;
+            position: absolute;            
+            min-width: 150px;
+            z-index: 1;
+        }
+        .dropdown-content a
+        {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .dropdown:hover .dropdown-content       /*Show dropdown*/
+        {
+            display: block;
+        }
+/*********************************************************************************************/
+/*Responsive*/
+/*********************************************************************************************/
+        @media screen and (max-width: 480px)
+        {
+            ul.navbar
+            {
+                margin-top: 0;
+                width: 100%;
+            }
+            ul.navbar li.right, 
+            ul.navbar li {float: none;}
+            .dropdown:hover .dropdown-content   /*Position dropdown list elements to the right*/
+            {
+                float: right;
+                width: 30%;
+                position: fixed;
+                right: 0;
+            }
+            .header
+            {
+                display: none;
+            }
+        }
+/*********************************************************************************************/
+/*Content*/
+/*********************************************************************************************/
+        body
+        {
+            background: linear-gradient(rgba(51, 111, 196, 0.2), white);
+        }
+        div.content
+         {
+            position: static;
+            top: 0px;
+            background-color: white;
+            -moz-box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.5);
+            -webkit-box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.5);
+            box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.5);
+            margin: 0% 5% 0% 5%;
+            padding: 10px 16px;
+            height: 90%;
+            text-align: justify;
+         }
+/*********************************************************************************************/
