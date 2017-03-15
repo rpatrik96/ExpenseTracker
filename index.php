@@ -26,8 +26,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis euismod justo quis
 Donec velit quam, dapibus et consequat a, accumsan eget ligula. In porta ornare urna, eu porttitor turpis tempor non. Integer faucibus non justo id tincidunt. Sed viverra ut felis non pharetra. Aenean eget vehicula dolor. Nunc consectetur eget enim sed commodo. Suspendisse at sem hendrerit lorem congue euismod.
 Vestibulum facilisis tortor dictum quam varius, nec luctus lorem pretium. Nunc accumsan, enim sit amet facilisis lobortis, leo arcu efficitur justo, ut fermentum neque ipsum posuere tortor. Aenean congue quis lacus a convallis. Nullam euismod laoreet eros eget venenatis. Etiam mattis arcu consequat velit venenatis hendrerit vel ac tortor. Proin pretium metus turpis, ut elementum quam ullamcorper vitae. Nunc rutrum massa nibh, quis imperdiet eros fermentum quis. Phasellus velit magna, malesuada laoreet porta eget, rutrum eu augue. Vivamus elementum leo augue. Phasellus tempor mauris in nulla accumsan gravida. Pellentesque porta, leo id cursus scelerisque, arcu orci lacinia tellus, at aliquam lectus neque interdum nisi. Duis at sem viverra, aliquet dolor nec, hendrerit metus.
     </div>
-    <div class="footer">
-        &#9400; Patrik Reizinger 	 2017
-    </div>
+    <?php
+        include 'footer.php';
+    ?>
 </body>
 </html>

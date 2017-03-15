@@ -104,8 +104,8 @@
 
                
         </form> 
-    <div class="footer">
-        &#9400; Patrik Reizinger 	 2017
-    </div>
+    <?php
+        include 'footer.php';
+    ?>
 </body>
 </html>

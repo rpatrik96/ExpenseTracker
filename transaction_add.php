@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <?php
-        require 'head.php';
+        include 'head.php';
     ?>
 <body>
     <?php
@@ -115,8 +115,8 @@
 
                
         </form> 
-    <div class="footer">
-        &#9400; Patrik Reizinger 	 2017
-    </div>
+    <?php
+        include 'footer.php';
+    ?>
 </body>
 </html>
