@@ -16,7 +16,17 @@
             </div>
         </li>
         <li class="right"> <a href="#About">About</a> </li>
-        <li class="right"> <a href="#Login">Login</a> </li>
+        <li class="right dropdown"> <a href="#Login" class="dropbtn">Login</a> 
+            <form method="GET">
+                <div class="dropdown-form">
+                    <label for="user_">User Name</label>
+                    <input id="user_" type="text" name=user placeholder="User name">
+                    <label for="pswd">Password</label>
+                    <input type="password" name=password  placeholder="Password">
+                    <input type="submit">
+                </div>
+            </form>    
+        </li>
     </ul>
     <div class="header">
        <div class="bottomright"> Let the ca$h flow! </div>
