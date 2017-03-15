@@ -1,7 +1,7 @@
  <?php
     echo ('
     <ul class="navbar">
-        <li> <a class="active" href="GHA.php">Home</a> </li>
+        <li> <a class="active" href="index.php">Home</a> </li>
         <li class="dropdown"> 
             <a href="#" class="dropbtn">Statistics</a>
             <div class="dropdown-content">
@@ -16,7 +16,7 @@
             </div>
         </li>
         <li class="right"> <a href="#About">About</a> </li>
-        <li class="right dropdown"> <a href="#Login" class="dropbtn">Login</a> 
+        <li class="right dropdown"> <a class=" dropbtn">Login</a> 
             <form method="GET" class="dropdown-form">
                     <label for="user_">User Name</label>
                     <input id="user_" type="text" name=user placeholder="User name">
@@ -26,7 +26,8 @@
                     <div class="note">
                         New to ExpenseTracker? <a href="register.php" style="background-color: #f2f2f2">Register</a>
                     </div>
-            </form>    
+            </form> 
+        <li class="right dropdown"> <a href="register.php">Register</a>    
         </li>
     </ul>
     <div class="header">

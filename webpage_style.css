@@ -17,6 +17,7 @@ body
             padding: 0;
             overflow: auto;
             background-color: rgb(0, 28, 73);
+            border-top: 1px solid #ccc;
         }
         ul.navbar li
         {
@@ -59,10 +60,11 @@ body
             float: right;
             width: 100%;
             top: 0px;
-            background-color: rgb(222, 222, 222);
+            background-color: rgba(0, 11, 28, 0.8);
             text-align: center;
             font-family: Helvetica, sans-serif;
             font-variant: small-caps;
+            color: white;
             margin-top: 0px;
             padding: 8px 0px 8px 0px;
             height: 64px;
@@ -83,13 +85,14 @@ body
 /*********************************************************************************************/
         .footer
         {
-            background-color: rgb(222, 222, 222);
+            background-color: rgb(200, 200, 200);
             text-align: center;
             font-family: Helvetica, sans-serif;
             font-variant: normal;
             font-weight: 400;
             margin-top: 5%;
             padding: 8px;
+            border-top: 1px solid #ccc;
         }
 
 /*********************************************************************************************/
@@ -119,16 +122,16 @@ body
 /*********************************************************************************************/
         body
         {
-            background: linear-gradient(rgba(51, 111, 196, 0.2), white);
+            background: linear-gradient(rgba(51, 111, 196, 0.4), rgba(51, 111, 196, 0.15));
         }
         div.content
          {
             position: static;
             top: 0px;
             background-color: white;
-            -moz-box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.5);
-            -webkit-box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.5);
-            box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.5);
+            -moz-box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.8);
+            -webkit-box-shadow: 1px 1px 8px rgba(51, 111, 196, 0.8);
+            box-shadow: 1px px 8px rgba(51, 111, 196, 0.8);
             margin: 0% 5% 0% 5%;
             padding: 10px 16px;
             height: 90%;
@@ -154,6 +157,12 @@ body
          .error
          {
              color: red;
+         }
+
+         .success
+         {
+             font-size: 20px;
+             color: green;
          }
 /*********************************************************************************************/
 /*Forms*/
