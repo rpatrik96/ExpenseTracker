@@ -39,38 +39,6 @@
             {
                 move_uploaded_file($_FILES["file4upload"]["tmp_name"], $file);
                 $sysMsg = "<span class=\"success\">".basename( $_FILES["file4upload"]["name"]). " was successfully uploaded.</span><BR/><BR/>";
-            
-
-            $csv = array_map('str_getcsv', file($file));
-
-            $count_row = count($csv);
-            $count_column = count($csv[0]);
-            printf("<TABLE>");
-            for ($i=0; $i < $count_row ; $i++) 
-            { 
-                if($i==0)
-                {
-                    printf("<TH>");
-                }
-                else
-                {
-                    printf("<TR>");
-                }
-                for ($j=0; $j < $count_column ; $j++) 
-                { 
-                    printf("<TD>%s</TD>",$csv[$i][$j]);
-                }
-                if($i==0)
-                {
-                    printf("</TH>");
-                }
-                else
-                {
-                    printf("</TR>");
-                }
-            }
-            
-
             }
         }
     ?>
@@ -84,6 +52,41 @@
             <input type="submit">
              </div>
     </form> 
+    <?php
+        if($ok)
+        {
+        $csv = array_map('str_getcsv', file($file));
+
+        $count_row = count($csv);
+        $count_column = count($csv[0]);
+        printf("<div class=\"table\"><TABLE>");
+        for ($i=0; $i < $count_row ; $i++) 
+        { 
+            if($i==0)
+            {
+                printf("<TH>");
+            }
+            else
+            {
+                printf("<TR>");
+            }
+            for ($j=0; $j < $count_column ; $j++) 
+            { 
+                printf("<TD>%s</TD>",$csv[$i][$j]);
+            }
+            if($i==0)
+            {
+                printf("</TH>");
+            }
+            else
+            {
+                printf("</TR>");
+            }
+        }
+        printf("</TABLE></div>");
+
+        }
+    ?>
     </div>
     <?php
         include 'footer.php';
