@@ -18,12 +18,15 @@
         <li class="right"> <a href="#About">About</a> </li>
         <li class="right dropdown"> <a href="#Login" class="dropbtn">Login</a> 
             <form method="GET">
-                <div class="dropdown-form">
+                <div class="form">
                     <label for="user_">User Name</label>
                     <input id="user_" type="text" name=user placeholder="User name">
                     <label for="pswd">Password</label>
                     <input type="password" name=password  placeholder="Password">
                     <input type="submit">
+                    <div class="note">
+                        New to ExpenseTracker? <a href="#" style="background-color: #f2f2f2">Register</a>
+                    </div>
                 </div>
             </form>    
         </li>

@@ -35,7 +35,7 @@ body
             background-color: rgb(0, 52, 124);
         }
 
-        li a.active, .dropdown-content, .dropdown-form
+        li a.active, .dropdown-content, .form
         {
             background-color: rgb(51, 111, 196);
             
@@ -136,6 +136,22 @@ body
             height: 90%;
             text-align: justify;
          }
+         div.note
+         {
+             font-weight: 200;
+             font-variant: normal;
+             font-size: 10pt;
+         }
+         div.note a
+         {
+            display: inline;
+            padding: 0px 0px;
+            color: rgb(51, 111, 196);
+         }
+         div.note a:hover
+         {
+            text-decoration: underline;
+         }
 /*********************************************************************************************/
 /*Forms*/
 /*********************************************************************************************/
@@ -162,7 +178,7 @@ body
             cursor: pointer;
         }
 
-        .dropdown-form 
+        .form 
         {
             max-width: 250px;
             border-radius: 5px;
@@ -174,7 +190,7 @@ body
             text-align: left;
         }
 
-        .dropdown:hover .dropdown-form 
+        .dropdown:hover .form 
         {
             display: block;
             position: fixed;
@@ -200,7 +216,7 @@ body
                 position: fixed;
                 right: 0;
             }
-            .dropdown-form
+            .form
             {
                 max-width: 100%;
             }
