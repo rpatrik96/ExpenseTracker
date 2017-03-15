@@ -2,18 +2,18 @@
     echo ('
     <ul class="navbar">
         <li> <a class="active" href="index.php">Home</a> </li>
-        <li class="dropdown"> 
-            <a href="#" class="dropbtn">Statistics</a>
-            <div class="dropdown-content">
-                <a href="#">Weekly</a>
-                <a href="#">Monthly</a>
+        <li class="dropdown"> <a class="dropbtn">Transactions</a>
+            <div class="dropdown-content"> 
+                <a href="transaction_add.php">Add</a>
+                <a href="#">Import</a>
+                <a href="#">Edit</a>
             </div>
         </li>
-        <li class="dropdown"> <a  href="#" class="dropbtn">Import</a>
-            <div class="dropdown-content"> 
-                <a href="#">From file</a>
-                <a href="#">From URL</a>
-            </div>
+        <li class="dropdown"> <a  href="#" class="dropbtn">Categories</a>
+            <!--<div class="dropdown-content"> 
+                <a href="#">Import</a>
+                <a href="#">Edit</a>
+            </div> -->
         </li>
         <li class="right"> <a href="#About">About</a> </li>
         <li class="right dropdown"> <a class=" dropbtn">Login</a> 

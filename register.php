@@ -13,7 +13,7 @@
             $UserName = $Email = $Pswd = $Pswd_again ="";
             $submitted = 0; /*to check if really submitted*/
             $ok = 1;    /*to check validity*/
-            $regMsg = "";
+            $sysMsg = "";
             if($_SERVER['REQUEST_METHOD'] =="POST")
             {
                 $submitted = 1;
@@ -56,20 +56,20 @@
             if($submitted and $ok)
             {
                 $submitted = 0;
-                $UserName = test_input($_POST['user']);
+                /*$UserName = test_input($_POST['user']);
                 $Email = test_input($_POST['email']);
                 $Pswd = test_input($_POST['password']);
-                $Pswd_again = test_input($_POST['password_again']);
+                $Pswd_again = test_input($_POST['password_again']);*/
                 $mysqli = new mysqli("localhost", "root", "", "expensetracker");
                 if($mysqli->connect_errno)
                 {
-                    echo "MySQL Fehler: " . $mysqli->connect_error . "<BR/>";
+                    echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
                 }
                 $query = sprintf("INSERT INTO user(UserName, Email, Pswd) VALUES('%s','%s','%s')",
                                 $UserName, $Email, $Pswd);
                 $mysqli->query($query);
                 $mysqli->close();
-                $regMsg = "<span class=\"success\">Registration process was succesful!</span></BR></BR></BR>";
+                $sysMsg = "<span class=\"success\">Registration process was succesful!</span><BR/><BR/>";
             }
 
             /*Test function for security*/
@@ -84,8 +84,8 @@
     ?>
         <form method="POST" class="form">
 
-                 <?php
-                    echo $regMsg;
+                <?php
+                    echo $sysMsg;
                 ?>
 
                 <label for="user_">User Name</label> <span class="error"><?php echo $userMsg ?></span>
