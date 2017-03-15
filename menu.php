@@ -5,7 +5,7 @@
         <li class="dropdown"> <a class="dropbtn">Transactions</a>
             <div class="dropdown-content"> 
                 <a href="transaction_add.php">Add</a>
-                <a href="#">Import</a>
+                <a href="transaction_import.php">Import</a>
                 <a href="#">Edit</a>
             </div>
         </li>
