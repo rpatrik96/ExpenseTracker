@@ -6,7 +6,8 @@
 <body>
     <?php
         require 'menu.php';
-    ?>  
+    ?> 
+    <div class="content">
     <?php
         $valMsg = $dateMsg = $catMsg = "";
         /*OwnerID can not be set yet*/
@@ -115,6 +116,7 @@
 
                
         </form> 
+        </div>
     <?php
         include 'footer.php';
     ?>

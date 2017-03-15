@@ -7,6 +7,7 @@
     <?php
         require 'menu.php';
     ?>  
+    <div class="content">
     <?php
         
             $userMsg = $mailMsg = $pswdMsg ="";
@@ -100,10 +101,9 @@
                 <label for="mail" style=>E-mail address</label><span class="error"><?php echo $mailMsg ?></span>
                 <input id="mail" type="email" name=email placeholder="E-mail address">
 
-                <input type="submit">
-
-               
+                <input type="submit">   
         </form> 
+        </div>
     <?php
         include 'footer.php';
     ?>
