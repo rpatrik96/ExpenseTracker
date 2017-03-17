@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
     <?php
@@ -63,9 +66,8 @@
                 {
                     echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
                 }
-                /*OWNerID not known yet*/
-                $query = sprintf("INSERT INTO transaction(TransactionDate, TransactionDescription, TransactionValue, CategoryID,TransactionOwnerID) VALUES('%s', '%s', '%d', '%d','4')",
-                                    $TransactionDate, $TransactionDescription, $TransactionValue, $CategoryID, $TransactionOwnerID);
+                $query = sprintf("INSERT INTO transaction(TransactionDate, TransactionDescription, TransactionValue, CategoryID,TransactionOwnerID) VALUES('%s', '%s', '%d', '%d','%d')",
+                                    $TransactionDate, $TransactionDescription, $TransactionValue, $CategoryID, $_SESSION['UserID']);
                 $mysqli->query($query);
                 $mysqli->close();
                 $sysMsg = "<span class=\"success\">Transaction was added successfully!</span><BR/><BR/>";
