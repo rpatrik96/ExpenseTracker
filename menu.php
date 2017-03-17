@@ -1,7 +1,11 @@
  <?php
     $sysMsg = "";
     $row = "";
-    
+    /*First webpage entry -> variable not set*/
+    if(!isset($_SESSION['logged_in']))
+    {
+        $_SESSION['logged_in'] = 0;
+    }
     
     if(!$_SESSION['logged_in'] and $_SERVER['REQUEST_METHOD'] == "POST")
     {
