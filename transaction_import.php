@@ -81,27 +81,20 @@
             printf("<div class=\"table\"><TABLE>");
                 for ($i=0; $i < $count_row ; $i++) 
                 { 
-                    if($i==0)
-                    {
-                        printf("<TH>");
-                    }
-                    else
-                    {
-                        printf("<TR>");
-                    }
+                    printf("<TR>");
                     for ($j=0; $j < $count_column ; $j++) 
                     { 
-                        printf("<TD>%s</TD>",$csv[$i][$j]);
+                        if(!$i)
+                        {
+                            printf("<TH>%s</TH>",$csv[$i][$j]);
+                        }
+                        else
+                        {
+                            printf("<TD>%s</TD>",$csv[$i][$j]);
+                        }
                     }
-                    if($i==0)
-                    {
-                        printf("</TH>");
+                    printf("</TR>");
                     }
-                    else
-                    {
-                        printf("</TR>");
-                    }
-                }
                 printf("</TABLE></div>");
         }
     ?>

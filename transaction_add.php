@@ -89,7 +89,7 @@
                 ?>
 
                 <label for="val">Value</label> <span class="error"><?php echo $valMsg ?></span>
-                <input id="value" type="text" name=value placeholder="Value">
+                <input id="val" type="text" name=value placeholder="Value">
 
                 <label for="cat">Category</label> <span class="error"><?php echo $catMsg ?></span><BR/><BR/>
                         <?php

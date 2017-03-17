@@ -65,7 +65,7 @@
                 <a href="#">Edit</a>
             </div>
         </li>
-        <li class="dropdown"> <a  href="#" class="dropbtn">Categories</a>
+        <li class="dropdown"> <a  href="category.php" class="dropbtn">Categories</a>
             <!--<div class="dropdown-content"> 
                 <a href="#">Import</a>
                 <a href="#">Edit</a>
