@@ -41,7 +41,7 @@
                     $Email = test_input($_POST['email']);
                 }
 
-                if(empty( $_POST[ 'password' ] ) or empty( $_POST[ 'password' ] ))
+                if(empty( $_POST[ 'password' ] ) or empty( $_POST[ 'password_again' ] ))
                 {
                     $pswdMsg = " Password is required!";
                     $ok = 0;

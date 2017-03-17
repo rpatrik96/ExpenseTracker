@@ -13,9 +13,10 @@
     <div class="content">
     <?php
         $sysMsg = "";
-        $ok = 1;
+        $ok = 0;
         if($_SERVER['REQUEST_METHOD'] =="POST")
         {
+            $ok = 1;
             $target_directory = "uploads/";
             $file = $target_directory.basename($_FILES["file4upload"]["name"]);
             $file_type = pathinfo($file, PATHINFO_EXTENSION);
@@ -58,35 +59,35 @@
     <?php
         if($ok)
         {
-        $csv = array_map('str_getcsv', file($file));
+            $csv = array_map('str_getcsv', file($file));
 
-        $count_row = count($csv);
-        $count_column = count($csv[0]);
-        printf("<div class=\"table\"><TABLE>");
-        for ($i=0; $i < $count_row ; $i++) 
-        { 
-            if($i==0)
-            {
-                printf("<TH>");
-            }
-            else
-            {
-                printf("<TR>");
-            }
-            for ($j=0; $j < $count_column ; $j++) 
+            $count_row = count($csv);
+            $count_column = count($csv[0]);
+            printf("<div class=\"table\"><TABLE>");
+            for ($i=0; $i < $count_row ; $i++) 
             { 
-                printf("<TD>%s</TD>",$csv[$i][$j]);
+                if($i==0)
+                {
+                    printf("<TH>");
+                }
+                else
+                {
+                    printf("<TR>");
+                }
+                for ($j=0; $j < $count_column ; $j++) 
+                { 
+                    printf("<TD>%s</TD>",$csv[$i][$j]);
+                }
+                if($i==0)
+                {
+                    printf("</TH>");
+                }
+                else
+                {
+                    printf("</TR>");
+                }
             }
-            if($i==0)
-            {
-                printf("</TH>");
-            }
-            else
-            {
-                printf("</TR>");
-            }
-        }
-        printf("</TABLE></div>");
+            printf("</TABLE></div>");
 
         }
     ?>
