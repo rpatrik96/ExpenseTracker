@@ -14,6 +14,7 @@
     <?php
         $sysMsg = "";
         $ok = 0;
+        $csv_ok = 1;
         if($_SERVER['REQUEST_METHOD'] =="POST")
         {
             $ok = 1;
@@ -47,6 +48,24 @@
         }
     ?>
     
+    <?php
+        if($ok)
+        {
+            $csv = array_map('str_getcsv', file($file));
+            $count_row = count($csv);
+            $count_column = count($csv[0]);
+            /*Check if ther is not a comma in the cells = the number of columns is not equal in the whole document*/
+            for($i=1; $i < $count_row ; $i++)
+            {
+                    if( $count_column != count($csv[$i]))
+                    {
+                        $sysMsg = sprintf("<span class=\"error\">Row $i seems to have a different number of columns, it may contain a (comma) in one of its cells, please check it and try to upload the file again.</span><BR/><BR/>");
+                        $csv_ok = 0;
+                    }
+            }
+        }
+    ?>
+
     <form method="POST" class="form" enctype="multipart/form-data">
             <?php
                 echo $sysMsg;
@@ -57,43 +76,45 @@
              </div>
     </form> 
     <?php
-        if($ok)
+        if($ok and $csv_ok)
         {
-            $csv = array_map('str_getcsv', file($file));
-
-            $count_row = count($csv);
-            $count_column = count($csv[0]);
             printf("<div class=\"table\"><TABLE>");
-            for ($i=0; $i < $count_row ; $i++) 
-            { 
-                if($i==0)
-                {
-                    printf("<TH>");
-                }
-                else
-                {
-                    printf("<TR>");
-                }
-                for ($j=0; $j < $count_column ; $j++) 
+                for ($i=0; $i < $count_row ; $i++) 
                 { 
-                    printf("<TD>%s</TD>",$csv[$i][$j]);
+                    if($i==0)
+                    {
+                        printf("<TH>");
+                    }
+                    else
+                    {
+                        printf("<TR>");
+                    }
+                    for ($j=0; $j < $count_column ; $j++) 
+                    { 
+                        printf("<TD>%s</TD>",$csv[$i][$j]);
+                    }
+                    if($i==0)
+                    {
+                        printf("</TH>");
+                    }
+                    else
+                    {
+                        printf("</TR>");
+                    }
                 }
-                if($i==0)
-                {
-                    printf("</TH>");
-                }
-                else
-                {
-                    printf("</TR>");
-                }
-            }
-            printf("</TABLE></div>");
-
+                printf("</TABLE></div>");
         }
     ?>
     </div>
     <?php
         include 'footer.php';
+    ?>
+    <?php
+        if(!$csv_ok)
+        {
+            unlink($file);
+            die();
+        }
     ?>
 </body>
 </html>

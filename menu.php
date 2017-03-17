@@ -2,6 +2,7 @@
     $sysMsg = "";
     $row = "";
     
+    
     if(!$_SESSION['logged_in'] and $_SERVER['REQUEST_METHOD'] == "POST")
     {
         $_SESSION['logged_in'] = 0;
@@ -22,6 +23,7 @@
             $_SESSION['UserID'] = $row[0];
             $_SESSION['UserName'] = $row[1];
             $_SESSION['logged_in'] = 1;
+            $submitted = 1;
         }
         else
         {
