@@ -12,10 +12,28 @@
     ?>  
     <div class="content">
     <?php
+        $dateCol = 1;
+        $descCol = 2;
+        $valCol = 3;
         $sysMsg = "";
         $ok = 0;
         $csv_ok = 1;
-        if($_SERVER['REQUEST_METHOD'] =="POST")
+        if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['setcolumns']))
+        {
+            if(!empty($_POST['date']))
+            {
+                $dateCol = $_POST['date'];
+            }
+            if(!empty($_POST['val']))
+            {
+                $valCol = $_POST['val'];
+            }
+            if(!empty($_POST['des']))
+            {
+                $descCol = $_POST['des'];
+            }
+        }
+        if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['import']))
         {
             $ok = 1;
             $target_directory = "uploads/";
@@ -66,36 +84,111 @@
         }
     ?>
 
+    <form method="POST" class="form" >
+            <div style="text-align: left"><label for="up" style="text-align: left; font-family: Helvetica, sans-serif; font-weight: 700;font-variant: small-caps" >Upload CSV</label>
+            <label for="date">Date column</label>
+            <input id="date" type="text" name=date value=<?php echo $dateCol; ?>>
+            <label for="val">Value column</label>
+            <input id="val" type="text" name=val value=<?php echo $valCol; ?>>
+            <label for="des">Description column</label>
+            <input id="des" type="text" name=des value=<?php echo $descCol; ?>>
+            <input type="submit" name=setcolumns>
+             </div>
+    </form> 
+    <BR/><BR/><BR/>
     <form method="POST" class="form" enctype="multipart/form-data">
             <?php
                 echo $sysMsg;
             ?>
             <div style="text-align: left"><label for="up" style="text-align: left; font-family: Helvetica, sans-serif; font-weight: 700;font-variant: small-caps" >Upload CSV</label>
             <input id="up" type="file" name=file4upload>
-            <input type="submit">
+            <input type="submit" name=import>
              </div>
     </form> 
     <?php
         if($ok and $csv_ok)
         {
+            $mysqli = new mysqli("localhost", "root", "", "expensetracker");
+            $insert = new mysqli("localhost", "root", "", "expensetracker");
+            $desc = new mysqli("localhost", "root", "", "expensetracker");
+            if($insert->connect_errno)
+            {
+                echo "MySQL Error: " . $insert->connect_error . "<BR/>";
+            }
+            if($mysqli->connect_errno)
+            {
+                echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
+            }
+            if($desc->connect_errno)
+            {
+                echo "MySQL Error: " . $desc->connect_error . "<BR/>";
+            }
+            $mysqli->real_query("SELECT CategoryID, CategoryName FROM category ORDER BY CategoryName");
+            $result = $mysqli->use_result();
+            $list ="<select name=category>";
+            while ($row = $result->fetch_row()) 
+            {
+                $tmp = sprintf("<option value=$row[0]>$row[1]</option>");
+                $list = $list.$tmp;
+            }
+            $list = $list."</select>";
+
+            $desc_query = sprintf("SELECT Description, CategoryID FROM description WHERE UserID=%d", $_SESSION['UserID']);
+            $desc->real_query($desc_query);
+            $desc_res = $desc->use_result();
+            /*$cat_array =sprintf("array(");
+            
+
+            while($d_row = $desc_res->fetch_row())
+            {
+                $cat_array = $cat_array."\"".$d_row[0]."\"=>\"".$d_row[1]."\"";
+            }
+            $cat_array = $cat_array."\")";
+            chop($cat_array," ,");
+            print_r($cat_array);*/
+
+
             printf("<div class=\"table\"><TABLE>");
                 for ($i=0; $i < $count_row ; $i++) 
                 { 
                     printf("<TR>");
+                    if(!$i)
+                    {
+                        printf("<TH style=\"width:70px\">Category</TH>");
+                    }
+                    else
+                    {
+                        printf("<TD>%s</TD>",$list);
+                    }
+
                     for ($j=0; $j < $count_column ; $j++) 
                     { 
-                        if(!$i)
+                        if($j==$valCol or $j==$descCol or $j==$dateCol)
                         {
-                            printf("<TH>%s</TH>",$csv[$i][$j]);
-                        }
-                        else
-                        {
-                            printf("<TD>%s</TD>",$csv[$i][$j]);
+                            if(!$i)
+                            {
+                                printf("<TH>%s</TH>",$csv[$i][$j]);
+                            }
+                            else
+                            {
+                                printf("<TD>%s</TD>",$csv[$i][$j]);
+                            }
                         }
                     }
+                    /*if(!$i)
+                    {
+                        printf("<TH>Add</TH>");
+                    }
+                    else
+                    {
+                        printf("<TD>%s</TD>",$list);
+                    }*/
                     printf("</TR>");
                     }
                 printf("</TABLE></div>");
+                $mysqli->close();
+                $insert->close();
+                $desc->close();
         }
     ?>
     </div>

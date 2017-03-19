@@ -11,8 +11,6 @@
         require 'menu.php';
     ?>  
     <div class="content">
-                In the following textboxes You can specify items which will be used to order transactions to categories automatically.
-                Please do not use one expression in more boxes and use a comma as a separator character.
                 <form method="POST" class="form">
 
                 <?php
@@ -58,10 +56,11 @@
                                     {
                                         echo "MySQL Error: " . $insert->connect_error . "<BR/>";
                                     }
-                                    $insert_query = sprintf("INSERT INTO Description(UserID, CategoryID, Description) VALUES(%d, %d, '%s')", $_SESSION['UserID'],$_POST['category'],test_input($_POST['desc']));
-                                    echo $insert_query;
+                                    $insert_query = sprintf("INSERT INTO Description(UserID, CategoryID, Description) VALUES(%d, %d, '%s')", $_SESSION['UserID'],$_POST['category'],strtolower(test_input($_POST['desc'])));
                                     $insert->query($insert_query);
                                     $insert->close();
+                                    $descMsg = "<span class=\"success\">Action was successful!</span><BR/><BR/><BR/><BR/>";
+                                     echo $descMsg;
                                 }
                                 else
                                 {
@@ -126,11 +125,7 @@
                     }
                     
                 ?>
-                <BR/>
-                
-                <!--<input type="submit">-->
-
-               
+                <BR/>               
         </form> 
     </div>
     <?php

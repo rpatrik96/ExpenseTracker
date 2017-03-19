@@ -5,6 +5,7 @@ DROP TABLE Transaction;
 DROP TABLE Description;
 DROP TABLE Category;
 DROP TABLE User;
+DROP TABLE ImportColumns;
 
 CREATE TABLE User
 (
@@ -40,6 +41,16 @@ CREATE TABLE Transaction
     TransactionOwnerID int NOT NULL,
     foreign KEY (CategoryID) references Category(CategoryID),
     foreign KEY (TransactionOwnerID) references User(UserID)
+);
+
+CREATE TABLE ImportColumns
+(
+    ColumnID int PRIMARY KEY auto_increment,
+    DateCol int DEFAULT 1,
+    DescCol int DEFAULT 2,
+    ValCol int DEFAULT 3,
+    UserID int NOT NULL,
+    foreign KEY (UserID) references User(UserID)
 );
 
 

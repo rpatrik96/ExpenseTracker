@@ -69,7 +69,7 @@
                 {
                     echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
                 }
-                $query = sprintf("INSERT INTO user(UserName, Email, Pswd) VALUES('%s','%s','%s')",
+                $query = sprintf("INSERT INTO user(UserName, Email, Pswd) VALUES('%s','%s','%s');",
                                 $UserName, $Email, $Pswd);
                 $mysqli->query($query);
                 $mysqli->close();
