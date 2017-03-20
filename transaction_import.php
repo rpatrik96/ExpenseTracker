@@ -12,9 +12,9 @@
     ?>  
     <div class="content">
     <?php
-        $dateCol = 1;
-        $descCol = 2;
-        $valCol = 3;
+        $dateCol = 0;
+        $descCol = 1;
+        $valCol = 6;
         $sysMsg = "";
         $ok = 0;
         $csv_ok = 1;
@@ -85,7 +85,7 @@
     ?>
 
     <form method="POST" class="form" >
-            <div style="text-align: left"><label for="up" style="text-align: left; font-family: Helvetica, sans-serif; font-weight: 700;font-variant: small-caps" >Upload CSV</label>
+            <div style="text-align: left"><label  style="text-align: left; font-family: Helvetica, sans-serif; font-weight: 700;font-variant: small-caps" >CSV column settings</label> <BR/><BR/><BR/>
             <label for="date">Date column</label>
             <input id="date" type="text" name=date value=<?php echo $dateCol; ?>>
             <label for="val">Value column</label>
@@ -147,44 +147,79 @@
             chop($cat_array," ,");
             print_r($cat_array);*/
 
-
+            $automatically_inserted = 0;
             printf("<div class=\"table\"><TABLE>");
                 for ($i=0; $i < $count_row ; $i++) 
                 { 
-                    printf("<TR>");
-                    if(!$i)
+                    $category = new mysqli("localhost", "root", "", "expensetracker");
+                    if($category->connect_errno)
                     {
-                        printf("<TH style=\"width:70px\">Category</TH>");
+                        echo "MySQL Error: " . $category->connect_error . "<BR/>";
                     }
-                    else
+                    if ($i)
                     {
-                        printf("<TD>%s</TD>",$list);
-                    }
+                        /*AND Description LIKE '%s'*/
+                        /*"%".strtolower($csv[$i][$descCol])."%"*/
+                        $category_query = sprintf("SELECT CategoryID, Description FROM description WHERE UserID=%d", $_SESSION['UserID']);
+                        $category->real_query($category_query);
+                        $cat_result = $category->use_result();
 
-                    for ($j=0; $j < $count_column ; $j++) 
-                    { 
-                        if($j==$valCol or $j==$descCol or $j==$dateCol)
+                        while($cat_row = $cat_result->fetch_row())
                         {
-                            if(!$i)
+                            if(strpos( strtolower($csv[$i][$descCol]), $cat_row[1] ) !== false)
                             {
-                                printf("<TH>%s</TH>",$csv[$i][$j]);
-                            }
-                            else
-                            {
-                                printf("<TD>%s</TD>",$csv[$i][$j]);
+                                $auto_insert = new mysqli("localhost", "root", "", "expensetracker");
+                                if($auto_insert->connect_errno)
+                                {
+                                    echo "MySQL Error: " . $auto_insert->connect_error . "<BR/>";
+                                }
+                                $auto_query = sprintf("INSERT INTO transaction(TransactionDate, TransactionDescription, TransactionValue, CategoryID,TransactionOwnerID) VALUES('%s', '%s', '%d', '%d','%d')",
+                                    $csv[$i][$dateCol], $csv[$i][$descCol], abs($csv[$i][$valCol]), $cat_row[0] , $_SESSION['UserID']);
+                                $auto_insert->query($auto_query);
+                                $auto_insert->close();
+                                $automatically_inserted=1;
                             }
                         }
+
                     }
-                    /*if(!$i)
+                    if(!$automatically_inserted)
                     {
-                        printf("<TH>Add</TH>");
+                        printf("<TR>");
+                        for ($j=0; $j < $count_column ; $j++) 
+                        { 
+                            if($j==$valCol or $j==$descCol or $j==$dateCol)
+                            {
+                                if(!$i)
+                                {
+                                    printf("<TH>%s</TH>",$csv[$i][$j]);
+                                }
+                                else
+                                {
+                                    printf("<TD>%s</TD>",$csv[$i][$j]);
+                                }
+                            }
+                        }
+                        if(!$i)
+                        {
+                            printf("<TH style=\"width:70px\">Category</TH>");
+                        }
+                        else
+                        {
+                            printf("<TD>%s</TD>",$list);
+                        }
+                        if(!$i)
+                        {
+                            printf("<TH></TH>");
+                        }
+                        else
+                        {
+                            printf("<TD><input name=$j value=Add type=\"submit\"></TD>");
+                        }
+                        printf("</TR>");
+                        $category->close();
                     }
-                    else
-                    {
-                        printf("<TD>%s</TD>",$list);
-                    }*/
-                    printf("</TR>");
-                    }
+                    $automatically_inserted = 0;
+                }
                 printf("</TABLE></div>");
                 $mysqli->close();
                 $insert->close();
@@ -196,7 +231,8 @@
         include 'footer.php';
     ?>
     <?php
-        if(!$csv_ok)
+    /*Restore comment, it is needed*/
+        //if(!$csv_ok)
         {
             unlink($file);
             die();
