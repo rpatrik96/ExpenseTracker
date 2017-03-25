@@ -45,6 +45,21 @@
                     printf("</select>");
                     echo('<input type="submit" name=add value=Add><BR/><BR/><BR/><BR/>');
 
+                    $help_query = sprintf("SELECT DescriptionID FROM description WHERE UserID=%d",$_SESSION['UserID']);
+                    $help->real_query($help_query);
+                    $help_res = $help->use_result();
+                    if($_SERVER['REQUEST_METHOD'] =="POST")
+                    {
+                        while($help_row = $help_res->fetch_row())
+                        {
+                            if(isset($_POST[$help_row[0]]))
+                            {
+                                $del_query = sprintf("DELETE FROM Description WHERE DescriptionID=%d",$help_row[0]);
+                                $delete_category->query($del_query);
+                            }
+                        }
+                    }
+
                     if($_SERVER['REQUEST_METHOD'] =="POST")
                     {
                         if (isset($_POST['add']))
@@ -56,7 +71,7 @@
                                     {
                                         echo "MySQL Error: " . $insert->connect_error . "<BR/>";
                                     }
-                                    $insert_query = sprintf("INSERT INTO Description(UserID, CategoryID, Description) VALUES(%d, %d, '%s')", $_SESSION['UserID'],$_POST['category'],strtolower(test_input($_POST['desc'])));
+                                    $insert_query = sprintf("INSERT INTO Description(UserID, CategoryID, Description) VALUES(%d, %d, '%s')", $_SESSION['UserID'],$_POST['category'],strtoupper(test_input($_POST['desc'])));
                                     $insert->query($insert_query);
                                     $insert->close();
                                     $descMsg = "<span class=\"success\">Action was successful!</span><BR/><BR/><BR/><BR/>";
@@ -64,7 +79,7 @@
                                 }
                                 else
                                 {
-                                    $descMsg = "<span class=\"error\">Desrciption is needed!</span><BR/><BR/><BR/><BR/>";
+                                    $descMsg = "<span class=\"error\">Description is needed!</span><BR/><BR/><BR/><BR/>";
                                     echo $descMsg;
                                 }
                             }
@@ -92,21 +107,6 @@
                         printf("</TABLE></div><BR/><BR/><BR/>");
                     }
                     
-                    $help_query = sprintf("SELECT DescriptionID FROM description WHERE UserID=%d",$_SESSION['UserID']);
-                    $help->real_query($help_query);
-                    $help_res = $help->use_result();
-                    if($_SERVER['REQUEST_METHOD'] =="POST")
-                    {
-                        while($help_row = $help_res->fetch_row())
-                        {
-                            if(isset($_POST[$help_row[0]]))
-                            {
-                                $del_query = sprintf("DELETE FROM Description WHERE DescriptionID=%d",$help_row[0]);
-                                $delete_category->query($del_query);
-                                echo $del_query;
-                            }
-                        }
-                    }
 
                     $mysqli->close();
                     $mysqli2->close();

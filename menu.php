@@ -7,7 +7,7 @@
         $_SESSION['logged_in'] = 0;
     }
     
-    if(!$_SESSION['logged_in'] and $_SERVER['REQUEST_METHOD'] == "POST")
+    if(!$_SESSION['logged_in'] and $_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['login']))
     {
         $_SESSION['logged_in'] = 0;
         $mysqli = new mysqli("localhost", "root", "", "expensetracker");
@@ -48,7 +48,7 @@
                     <input id=\"user_\" type=\"text\" name=user placeholder=\"User name\">
                     <label for=\"pswd\">Password</label>
                     <input type=\"password\" name=password  placeholder=\"Password\">
-                    <input type=\"submit\">
+                    <input type=\"submit\" name=login>
                     <div class=\"note\">
                         New to ExpenseTracker? <a href=\"register.php\" style=\"background-color: #f2f2f2\">Register</a>
                     </div>

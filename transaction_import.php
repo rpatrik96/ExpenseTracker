@@ -12,27 +12,27 @@
     ?>  
     <div class="content">
     <?php
-        $dateCol = 0;
-        $descCol = 1;
-        $valCol = 6;
         $sysMsg = "";
         $ok = 0;
         $csv_ok = 1;
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['setcolumns']))
         {
-            if(!empty($_POST['date']))
-            {
-                $dateCol = $_POST['date'];
-            }
-            if(!empty($_POST['val']))
-            {
-                $valCol = $_POST['val'];
-            }
-            if(!empty($_POST['des']))
-            {
-                $descCol = $_POST['des'];
-            }
+            $insert_col = new mysqli("localhost", "root", "", "expensetracker");
+            $insert_query = sprintf("UPDATE importcolumns SET DateCol='%d', DescCol='%d', ValCol='%d' WHERE UserID=%d;", max(abs($_POST['date'])-1, 0), max(abs($_POST['des'])-1,0), max(abs($_POST['val'])-1,0), $_SESSION['UserID']);
+            $insert_col->query($insert_query);
+            $insert_col->close();
         }
+
+        $getcol = new mysqli("localhost", "root", "", "expensetracker");
+        $col_query = sprintf("SELECT DateCol, DescCol, ValCol FROM importcolumns WHERE UserID=%d", $_SESSION['UserID']);
+        $getcol->real_query($col_query);
+        $col_res = $getcol->use_result();
+        $col_row = $col_res->fetch_row();
+        $dateCol = $col_row[0];
+        $descCol = $col_row[1];
+        $valCol = $col_row[2];
+        $getcol->close();
+
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['import']))
         {
             $ok = 1;
@@ -87,11 +87,11 @@
     <form method="POST" class="form" >
             <div style="text-align: left"><label  style="text-align: left; font-family: Helvetica, sans-serif; font-weight: 700;font-variant: small-caps" >CSV column settings</label> <BR/><BR/><BR/>
             <label for="date">Date column</label>
-            <input id="date" type="text" name=date value=<?php echo $dateCol; ?>>
+            <input id="date" type="text" name=date value=<?php echo $dateCol+1; ?>>
             <label for="val">Value column</label>
-            <input id="val" type="text" name=val value=<?php echo $valCol; ?>>
+            <input id="val" type="text" name=val value=<?php echo $valCol+1; ?>>
             <label for="des">Description column</label>
-            <input id="des" type="text" name=des value=<?php echo $descCol; ?>>
+            <input id="des" type="text" name=des value=<?php echo $descCol+1; ?>>
             <input type="submit" name=setcolumns>
              </div>
     </form> 
@@ -136,17 +136,8 @@
             $desc_query = sprintf("SELECT Description, CategoryID FROM description WHERE UserID=%d", $_SESSION['UserID']);
             $desc->real_query($desc_query);
             $desc_res = $desc->use_result();
-            /*$cat_array =sprintf("array(");
-            
-
-            while($d_row = $desc_res->fetch_row())
-            {
-                $cat_array = $cat_array."\"".$d_row[0]."\"=>\"".$d_row[1]."\"";
-            }
-            $cat_array = $cat_array."\")";
-            chop($cat_array," ,");
-            print_r($cat_array);*/
-
+         
+            $duplicate_exist = 0;
             $automatically_inserted = 0;
             printf("<div class=\"table\"><TABLE>");
                 for ($i=0; $i < $count_row ; $i++) 
@@ -158,31 +149,47 @@
                     }
                     if ($i)
                     {
-                        /*AND Description LIKE '%s'*/
-                        /*"%".strtolower($csv[$i][$descCol])."%"*/
                         $category_query = sprintf("SELECT CategoryID, Description FROM description WHERE UserID=%d", $_SESSION['UserID']);
                         $category->real_query($category_query);
                         $cat_result = $category->use_result();
 
                         while($cat_row = $cat_result->fetch_row())
                         {
-                            if(strpos( strtolower($csv[$i][$descCol]), $cat_row[1] ) !== false)
+                            $duplicate_check = new mysqli("localhost", "root", "", "expensetracker");
+                            if($duplicate_check->connect_errno)
                             {
-                                $auto_insert = new mysqli("localhost", "root", "", "expensetracker");
-                                if($auto_insert->connect_errno)
-                                {
-                                    echo "MySQL Error: " . $auto_insert->connect_error . "<BR/>";
-                                }
-                                $auto_query = sprintf("INSERT INTO transaction(TransactionDate, TransactionDescription, TransactionValue, CategoryID,TransactionOwnerID) VALUES('%s', '%s', '%d', '%d','%d')",
-                                    $csv[$i][$dateCol], $csv[$i][$descCol], abs($csv[$i][$valCol]), $cat_row[0] , $_SESSION['UserID']);
-                                $auto_insert->query($auto_query);
-                                $auto_insert->close();
-                                $automatically_inserted=1;
+                                echo "MySQL Error: " . $duplicate_check->connect_error . "<BR/>";
                             }
+                            $duplicate_query = sprintf("SELECT * FROM transaction WHERE TransactionDate='%s' and TransactionDescription='%s' and TransactionValue='%d' and TransactionOwnerID='%d';",
+                                                $csv[$i][$dateCol], strtoupper(str_replace(array('\'', '"'), "",$csv[$i][$descCol])), abs($csv[$i][$valCol]), $_SESSION['UserID']);
+                            $duplicate_check->real_query($duplicate_query);
+                            $dupl_result = $duplicate_check->use_result();
+                            if(!$dupl_result->fetch_row())
+                            {
+                                if(strpos(strtoupper(str_replace(array('\'', '"'), "",$csv[$i][$descCol])), $cat_row[1] ) !== false)
+                                {
+                                    $auto_insert = new mysqli("localhost", "root", "", "expensetracker");
+                                    if($auto_insert->connect_errno)
+                                    {
+                                        echo "MySQL Error: " . $auto_insert->connect_error . "<BR/>";
+                                    }
+                                    $auto_query = sprintf("INSERT INTO transaction(TransactionDate, TransactionDescription, TransactionValue, CategoryID,TransactionOwnerID) VALUES('%s', '%s', '%d', '%d','%d')",
+                                        $csv[$i][$dateCol], strtoupper(str_replace(array('\'', '"'), "",$csv[$i][$descCol])), abs($csv[$i][$valCol]), $cat_row[0] , $_SESSION['UserID']);
+                                    $auto_insert->query($auto_query);
+                                    $auto_insert->close();
+                                    $automatically_inserted=1;
+                                }
+                            }
+                            else
+                            {
+                                $automatically_inserted = 1;
+                                $duplicate_exist = 1;
+                            }
+                            $duplicate_check->close();
                         }
 
                     }
-                    if(!$automatically_inserted)
+                    if(!$automatically_inserted and !$duplicate_exist)
                     {
                         printf("<TR>");
                         for ($j=0; $j < $count_column ; $j++) 
@@ -209,21 +216,36 @@
                         }
                         if(!$i)
                         {
-                            printf("<TH></TH>");
+                            printf("<TH>Action</TH>");
                         }
                         else
                         {
-                            printf("<TD><input name=$j value=Add type=\"submit\"></TD>");
+                            printf("<TD><input name=$i value=Add type=\"submit\"></TD>");
                         }
                         printf("</TR>");
                         $category->close();
                     }
                     $automatically_inserted = 0;
+                    $duplicate_exist = 0;
                 }
                 printf("</TABLE></div>");
                 $mysqli->close();
                 $insert->close();
                 $desc->close();
+                if($_SERVER['REQUEST_METHOD'] =="POST")
+                {
+                    if(isset($_POST[1]))
+                    {
+                        echo "1 is set";
+                    }
+                    for($k=0; $k<$count_row; $k++)
+                    {
+                        if(isset($_POST[$k]))
+                        {
+                            echo $k;
+                        }
+                    }
+                }
         }
     ?>
     </div>
