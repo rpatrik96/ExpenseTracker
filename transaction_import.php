@@ -70,6 +70,8 @@
         if($ok)
         {
             $csv = array_map('str_getcsv', file($file));
+            $_SESSION['csv'] = $csv;
+            $_SESSION['count_row'] = count($csv);
             $count_row = count($csv);
             $count_column = count($csv[0]);
             /*Check if ther is not a comma in the cells = the number of columns is not equal in the whole document*/
@@ -125,7 +127,8 @@
             }
             $mysqli->real_query("SELECT CategoryID, CategoryName FROM category ORDER BY CategoryName");
             $result = $mysqli->use_result();
-            $list ="<select name=category>";
+            //$list ="<select name=category>";
+            $list = "";
             while ($row = $result->fetch_row()) 
             {
                 $tmp = sprintf("<option value=$row[0]>$row[1]</option>");
@@ -139,7 +142,7 @@
          
             $duplicate_exist = 0;
             $automatically_inserted = 0;
-            printf("<div class=\"table\"><TABLE>");
+            printf("<BR/><BR/><BR/><form  method=\"POST\" class=\"form\"><div class=\"table\"><TABLE>");
                 for ($i=0; $i < $count_row ; $i++) 
                 { 
                     $category = new mysqli("localhost", "root", "", "expensetracker");
@@ -212,16 +215,17 @@
                         }
                         else
                         {
-                            printf("<TD>%s</TD>",$list);
+                            $temp = "<select name=category".$i.">".$list;
+                            printf("<TD>%s</TD>",$temp);
                         }
-                        if(!$i)
+                       /* if(!$i)
                         {
                             printf("<TH>Action</TH>");
                         }
                         else
                         {
-                            printf("<TD><input name=$i value=Add type=\"submit\"></TD>");
-                        }
+                            printf("<TD><input type=\"submit\" name=$i value=Add></TD>");
+                        }*/
                         printf("</TR>");
                         $category->close();
                     }
@@ -229,32 +233,42 @@
                     $duplicate_exist = 0;
                 }
                 printf("</TABLE></div>");
+                printf("<input type=\"submit\" name=add></form>");
                 $mysqli->close();
                 $insert->close();
                 $desc->close();
-                if($_SERVER['REQUEST_METHOD'] =="POST")
+        }
+        if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['add']))
                 {
-                    if(isset($_POST[1]))
+                    $csv = $_SESSION['csv'];
+                    for($k=0; $k<$_SESSION['count_row']; $k++)
                     {
-                        echo "1 is set";
-                    }
-                    for($k=0; $k<$count_row; $k++)
-                    {
-                        if(isset($_POST[$k]))
+                        $catName = "category".$k;
+                        if(isset($_POST[$catName]))
                         {
-                            echo $k;
+                            $manual_insert = new mysqli("localhost", "root", "", "expensetracker");
+                            if($manual_insert->connect_errno)
+                            {
+                                echo "MySQL Error: " . $manual_insert->connect_error . "<BR/>";
+                            }
+                            $manual_query = sprintf("INSERT INTO transaction(TransactionDate, TransactionDescription, TransactionValue, CategoryID,TransactionOwnerID) VALUES('%s', '%s', '%d', '%d','%d')",
+                                $csv[$k][$dateCol], strtoupper(str_replace(array('\'', '"'), "",$csv[$k][$descCol])), abs($csv[$k][$valCol]), $_POST[$catName] , $_SESSION['UserID']);
+                            $manual_insert->query($manual_query);
+                            $manual_insert->close();
                         }
                     }
+                    unset($_SESSION['csv']);
+                    unset($_SESSION['count_row']);
+                    $sysMsg =  "<span class=\"success\">Import was successful!</span><BR/><BR/>";
+                    echo $sysMsg;
                 }
-        }
     ?>
     </div>
     <?php
         include 'footer.php';
     ?>
     <?php
-    /*Restore comment, it is needed*/
-        //if(!$csv_ok)
+        if(!$csv_ok)
         {
             unlink($file);
             die();
