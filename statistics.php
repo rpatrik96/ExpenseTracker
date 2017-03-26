@@ -8,86 +8,10 @@
         require 'head.php';
         
     ?>
-<script type="text/javascript" src="fusioncharts/fusioncharts.js"></script>
-<script type="text/javascript" src="fusioncharts/themes/fusioncharts.theme.ocean.js"></script>
 <body>
     <?php
         require 'menu.php';
     ?>
-        
-<!--<script type="text/javascript">
-  FusionCharts.ready(function(){
-    var revenueChart = new FusionCharts({
-        "type": "column2d",
-        "renderAt": "chartContainer",
-        "width": "500",
-        "height": "300",
-        "dataFormat": "json",
-        "dataSource":  {
-          "chart": {
-            "caption": "Monthly revenue for last year",
-            "subCaption": "Harry's SuperMart",
-            "xAxisName": "Month",
-            "yAxisName": "Revenues (In USD)",
-            "theme": "fint"
-         },
-         "data": [
-            {
-               "label": "Jan",
-               "value": "420000"
-            },
-            {
-               "label": "Feb",
-               "value": "810000"
-            },
-            {
-               "label": "Mar",
-               "value": "720000"
-            },
-            {
-               "label": "Apr",
-               "value": "550000"
-            },
-            {
-               "label": "May",
-               "value": "910000"
-            },
-            {
-               "label": "Jun",
-               "value": "510000"
-            },
-            {
-               "label": "Jul",
-               "value": "680000"
-            },
-            {
-               "label": "Aug",
-               "value": "620000"
-            },
-            {
-               "label": "Sep",
-               "value": "610000"
-            },
-            {
-               "label": "Oct",
-               "value": "490000"
-            },
-            {
-               "label": "Nov",
-               "value": "900000"
-            },
-            {
-               "label": "Dec",
-               "value": "730000"
-            }
-          ]
-      }
-
-  });
-revenueChart.render();
-})
-</script>-->
-    <div id="chartContainer">FusionCharts XT will load here!</div>
     <div class="content">
     <form method="POST" class="form" >
         <label for="date_min" >Select date</label> 
@@ -124,37 +48,34 @@ revenueChart.render();
             {
                 echo "MySQL Error: " . $chart->connect_error . "<BR/>";
             }
-            $chart_query = sprintf("SELECT C.CategoryName, SUM(T.TransactionValue) FROM transaction T JOIN category C ON T.CategoryID=C.CategoryID WHERE TransactionOwnerID='%d' and TransactionDate BETWEEN '%s' and '%s' GROUP BY T.CategoryID;",
+            $chart_query = sprintf("SELECT C.CategoryName, SUM(T.TransactionValue) AS CatVal FROM transaction T JOIN category C ON T.CategoryID=C.CategoryID WHERE TransactionOwnerID='%d' and TransactionDate BETWEEN '%s' and '%s' GROUP BY T.CategoryID;",
                     $_SESSION['UserID'], $_POST['date_min'], $_POST['date_max']);
-            $chart->query($chart_query);
+            $result = $chart->query($chart_query);
             // If the query returns a valid response, prepare the JSON string
             if ($result) 
             {
                  // The `$arrData` array holds the chart attributes and data
                 $arrData = array(
                     "chart" => array(
-                    "caption" => "Incomes and expenses",
-                    "paletteColors" => "#0075c2",
-                    "bgColor" => "#ffffff",
-                    "borderAlpha"=> "20",
-                    "canvasBorderAlpha"=> "0",
-                    "usePlotGradientColor"=> "0",
-                    "plotBorderAlpha"=> "10",
-                    "showXAxisLine"=> "1",
-                    "xAxisLineColor" => "#999999",
-                    "showValues" => "0",
-                    "divlineColor" => "#999999",
-                    "divLineIsDashed" => "1",
-                    "showAlternateHGridColor" => "0"
-                    )
+                  "caption" => "Incomes and expenses",
+                  "paletteColors" => "#0075c2",
+                  "xAxisNameFontSize" => 12,
+                  "yAxisNameFontSize" => 12,
+                  "showValues" => "0",
+                  "subCaption"=> "Category-based statistics",
+                  "xAxisname"=> "Category",
+                  "yAxisName"=> "Amount (In HUF)",
+                  "numberPrefix"=> "Ft",
+                  "theme" => "carbon"
+              	)
                 );
                 $arrData["data"] = array();
                 // Push the data into the array
                 while($row = mysqli_fetch_array($result)) 
                 {
                     array_push($arrData["data"], array(
-                        "label" => $row[0],
-                        "value" => $row[1]
+                        "label" => $row["CategoryName"],
+                        "value" => $row["CatVal"]
                         )
                     );
                 }
@@ -172,6 +93,8 @@ revenueChart.render();
             }
         }
     ?>
+    <BR/><BR/>
+    <div id="chart-1" class="form"></div>
     </div>
     <?php
         include 'footer.php';
