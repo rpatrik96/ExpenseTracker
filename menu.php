@@ -62,7 +62,7 @@
             <div class="dropdown-content"> 
                 <a href="transaction_add.php">Add</a>
                 <a href="transaction_import.php">Import</a>
-                <a href="#">Edit</a>
+                <a href="statistics.php">Statisctics</a>
             </div>
         </li>
         <li class="dropdown"> <a  href="category.php" class="dropbtn">Categories</a>
