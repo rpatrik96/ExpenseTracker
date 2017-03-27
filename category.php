@@ -4,7 +4,7 @@
     {
 	header("Location: http://localhost:8080/ExpenseTracker/index.php");
 	exit();
-}
+    }
 ?>
 <!DOCTYPE html>
 <html>
