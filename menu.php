@@ -15,14 +15,15 @@
         {
             echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
         }
-        $mysqli->real_query("SELECT UserID, UserName, Pswd FROM user");
+        $query = sprintf("SELECT UserID, UserName, Pswd FROM user WHERE UserName='%s'",$_POST['user']);
+        $mysqli->real_query($query);
         $result = $mysqli->use_result();
         $row = $result->fetch_row();
         if(!$row)
         {
             $sysMsg = "<span class=\"error\">User name is invalid!</span>";
         }
-        elseif($_POST['user'] == $row[1] and $_POST['password'] == $row[2])
+        elseif($_POST['user'] == $row[1] and sha1($_POST['password']) == $row[2])
         {
             $_SESSION['UserID'] = $row[0];
             $_SESSION['UserName'] = $row[1];
@@ -62,7 +63,7 @@
             <div class="dropdown-content"> 
                 <a href="transaction_add.php">Add</a>
                 <a href="transaction_import.php">Import</a>
-                <a href="statistics.php">Statisctics</a>
+                <a href="statistics.php">Statistics</a>
             </div>
         </li>
         <li class="dropdown"> <a  href="category.php" class="dropbtn">Categories</a>

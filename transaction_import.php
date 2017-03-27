@@ -1,4 +1,9 @@
 <?php
+    if(!$_SESSION['logged_in'])
+    {
+	header("Location: http://localhost:8080/ExpenseTracker/index.php");
+	exit();
+    }
     session_start();
 ?>
 <!DOCTYPE html>
@@ -46,11 +51,11 @@
             $file = $target_directory.basename($_FILES["file4upload"]["name"]);
             $file_type = pathinfo($file, PATHINFO_EXTENSION);
 
-            if(file_exists($file))
+            /*if(file_exists($file))
             {
                 $sysMsg = "<span class=\"error\">File already exists.</span><BR/><BR/>";
                 $ok = 0;
-            }
+            }*/
 
             if($file_type != "csv")
             {
@@ -79,7 +84,6 @@
             $csv = array_map('str_getcsv', file($file));
             /**$_SESSION variables are needed to handle the manual import on the same page*/
             $_SESSION['csv'] = $csv;
-            $_SESSION['count_row'] = count($csv);
             $count_row = count($csv);
             $count_column = count($csv[0]);
             /*Check if ther is not a comma in the cells = the number of columns is not equal in the whole document*/
@@ -231,7 +235,7 @@
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['add']))
         {
             $csv = $_SESSION['csv'];
-            for($k=0; $k<$_SESSION['count_row']; $k++)
+            for($k=0; $k<count($csv); $k++)
             {
                 $catName = "category".$k;
                 if(isset($_POST[$catName]))
@@ -248,7 +252,6 @@
                 }
             }
             unset($_SESSION['csv']);
-            unset($_SESSION['count_row']);
             $sysMsg =  "<span class=\"success\">Import was successful!</span><BR/><BR/>";
             echo $sysMsg;
         }

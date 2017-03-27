@@ -1,5 +1,10 @@
 <?php
     session_start();
+    if(!$_SESSION['logged_in'])
+    {
+	header("Location: http://localhost:8080/ExpenseTracker/index.php");
+	exit();
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -128,7 +133,7 @@
                         $get_category->close();
                     }
                     $mysqli->close();
-                     /*Test function for security*/
+                     /**Test function for security*/
                     function test_input($data)
                     {
                         $data = trim($data);

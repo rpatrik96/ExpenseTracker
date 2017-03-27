@@ -124,6 +124,12 @@ body
         {
             background: linear-gradient(rgba(51, 111, 196, 0.4), rgba(51, 111, 196, 0.15));
         }
+        h1, h2, h3, h4, h5, h6 
+        {
+            font-family: Helvetica, sans-serif;
+            font-variant: small-caps;
+            font-weight: 700;
+        }
         div.content
          {
             position: static;
@@ -153,7 +159,6 @@ body
          {
             text-decoration: underline;
          }
-
          .error
          {
              font-family: Helvetica, sans-serif;
@@ -161,7 +166,6 @@ body
              font-variant: small-caps;
              color: red;
          }
-
          .success
          {
              font-size: 20px;

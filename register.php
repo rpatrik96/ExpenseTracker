@@ -1,5 +1,5 @@
 <?php
-    session_start();
+    session_start();   
 ?>
 <!DOCTYPE html>
 <html>
@@ -71,7 +71,7 @@
                     echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
                 }
                 $query = sprintf("INSERT INTO user(UserName, Email, Pswd) VALUES('%s','%s','%s');",
-                                $UserName, $Email, $Pswd);
+                                $UserName, $Email, sha1($Pswd));
                 $mysqli->query($query);
                 $mysqli->close();
 
@@ -100,7 +100,7 @@
                 $sysMsg = "<span class=\"success\">Registration process was succesful!</span><BR/><BR/>";
             }
 
-            /*Test function for security*/
+            /**Test function for security*/
             function test_input($data)
             {
                 $data = trim($data);

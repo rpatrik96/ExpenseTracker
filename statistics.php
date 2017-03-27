@@ -1,4 +1,9 @@
 <?php
+    if(!$_SESSION['logged_in'])
+    {
+	header("Location: http://localhost:8080/ExpenseTracker/index.php");
+	exit();
+    }
     session_start();
 ?>
 

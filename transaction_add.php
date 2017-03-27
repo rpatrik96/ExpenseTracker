@@ -1,4 +1,9 @@
 <?php
+    if(!$_SESSION['logged_in'])
+    {
+	header("Location: http://localhost:8080/ExpenseTracker/index.php");
+	exit();
+    }
     session_start();
 ?>
 <!DOCTYPE html>
@@ -78,7 +83,7 @@
                 $sysMsg = "<span class=\"success\">Transaction was added successfully!</span><BR/><BR/>";
             }
 
-        /*Test function for security*/
+        /**Test function for security*/
         function test_input($data)
         {
             $data = trim($data);
