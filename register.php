@@ -3,9 +3,12 @@
 ?>
 <!DOCTYPE html>
 <html>
+<head>
     <?php
         require 'head.php';
     ?>
+    <title>ExpenseTracker - Register</title>
+</head>
 <body>
     <?php
         require 'menu.php';
@@ -18,6 +21,7 @@
             $submitted = 0; /*to check if really submitted*/
             $ok = 1;    /*to check validity*/
             $sysMsg = "";
+            /**Input field checks*/
             if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['register']))
             {
                 $submitted = 1;
@@ -60,37 +64,36 @@
             if($submitted and $ok)
             {
                 $submitted = 0;
-                /*$UserName = test_input($_POST['user']);
-                $Email = test_input($_POST['email']);
-                $Pswd = test_input($_POST['password']);
-                $Pswd_again = test_input($_POST['password_again']);*/
-                $getuser_num = new mysqli("localhost", "root", "", "expensetracker");
+                /**Insert new user*/
                 $mysqli = new mysqli("localhost", "root", "", "expensetracker");
-                $importcol = new mysqli("localhost", "root", "", "expensetracker");
                 if($mysqli->connect_errno)
                 {
                     echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
                 }
-                if($getuser_num->connect_errno)
-                {
-                    echo "MySQL Error: " . $getuser_num->connect_error . "<BR/>";
-                }
-                 if($importcol->connect_errno)
-                {
-                    echo "MySQL Error: " . $importcol->connect_error . "<BR/>";
-                }
-
                 $query = sprintf("INSERT INTO user(UserName, Email, Pswd) VALUES('%s','%s','%s');",
                                 $UserName, $Email, $Pswd);
                 $mysqli->query($query);
                 $mysqli->close();
 
+                /**Get UserID*/
+                $getuser_num = new mysqli("localhost", "root", "", "expensetracker");
+                if($getuser_num->connect_errno)
+                {
+                    echo "MySQL Error: " . $getuser_num->connect_error . "<BR/>";
+                }
                 $userNum = sprintf("SELECT MAX(UserID) FROM user");
                 $getuser_num->real_query($userNum);
                 $usernum_res = $getuser_num->use_result();
                 $num_res=$usernum_res->fetch_row();
 
+                /**Create default table for the user for the .csv import*/
+                $importcol = new mysqli("localhost", "root", "", "expensetracker");
+                if($importcol->connect_errno)
+                {
+                    echo "MySQL Error: " . $importcol->connect_error . "<BR/>";
+                }
                 $import_query = sprintf("INSERT INTO importcolumns(DateCol, DescCol, ValCol, UserID) VALUES (0,1,2, '%d');",$num_res[0]);
+                $getuser_num->close();
                 $importcol->query($import_query);
                 $importcol->close();
 

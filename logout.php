@@ -6,9 +6,12 @@
 ?>
 <!DOCTYPE html>
 <html>
+<head>
     <?php
         require 'head.php';
     ?>
+    <title>ExpenseTracker - Logout</title>
+</head>
 <body>
     <?php
         require 'menu.php';

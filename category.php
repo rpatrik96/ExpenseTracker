@@ -3,9 +3,12 @@
 ?>
 <!DOCTYPE html>
 <html>
+<head>
     <?php
         require 'head.php';
     ?>
+    <title>ExpenseTracker - Edit Category</title>
+</head>
 <body>
     <?php
         require 'menu.php';
@@ -19,17 +22,12 @@
 
                 
                 <?php
-                    $descMsg = "";
-                    $mysqli = new mysqli("localhost", "root", "", "expensetracker");
+                    $descMsg = "";                                       
+                    /**List existing categories for the dropdown list*/
                     $mysqli2 = new mysqli("localhost", "root", "", "expensetracker");
-                    $get_category = new mysqli("localhost", "root", "", "expensetracker");
-                    $delete_category = new mysqli("localhost", "root", "", "expensetracker");
-                    $insert = new mysqli("localhost", "root", "", "expensetracker");
-                    $help = new mysqli("localhost", "root", "", "expensetracker");
-
-                    if($mysqli->connect_errno)
+                    if($mysqli2->connect_errno)
                     {
-                        echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
+                        echo "MySQL Error: " . $mysqli2->connect_error . "<BR/>";
                     }
                     $mysqli2->real_query("SELECT CategoryID, CategoryName FROM category ORDER BY CategoryName");
                     $result2 = $mysqli2->use_result();
@@ -44,7 +42,13 @@
                     }
                     printf("</select>");
                     echo('<input type="submit" name=add value=Add><BR/><BR/><BR/><BR/>');
-
+                    $mysqli2->close();
+                    /**Handle deletes */
+                    $help = new mysqli("localhost", "root", "", "expensetracker");
+                    if($help->connect_errno)
+                    {
+                        echo "MySQL Error: " . $help->connect_error . "<BR/>";
+                    }
                     $help_query = sprintf("SELECT DescriptionID FROM description WHERE UserID=%d",$_SESSION['UserID']);
                     $help->real_query($help_query);
                     $help_res = $help->use_result();
@@ -52,14 +56,22 @@
                     {
                         while($help_row = $help_res->fetch_row())
                         {
-                            if(isset($_POST[$help_row[0]]))
+                            if(isset($_POST[$help_row[0]])) /**DescriptionID's are the identificators for the delete buttons*/
                             {
+                                $delete_category = new mysqli("localhost", "root", "", "expensetracker");
+                                if($delete_category->connect_errno)
+                                {
+                                    echo "MySQL Error: " . $delete_category->connect_error . "<BR/>";
+                                }
                                 $del_query = sprintf("DELETE FROM Description WHERE DescriptionID=%d",$help_row[0]);
                                 $delete_category->query($del_query);
+                                 $delete_category->close();
                             }
                         }
                     }
+                    $help->close();
 
+                    /**Handle category add*/
                     if($_SERVER['REQUEST_METHOD'] =="POST")
                     {
                         if (isset($_POST['add']))
@@ -75,7 +87,7 @@
                                     $insert->query($insert_query);
                                     $insert->close();
                                     $descMsg = "<span class=\"success\">Action was successful!</span><BR/><BR/><BR/><BR/>";
-                                     echo $descMsg;
+                                    echo $descMsg;
                                 }
                                 else
                                 {
@@ -85,36 +97,37 @@
                             }
                     }
 
+                    /**Create tables for the category-specific descriptions*/
+                    /**Query for categories*/
+                    $mysqli = new mysqli("localhost", "root", "", "expensetracker");
+                    if($mysqli->connect_errno)
+                    {
+                        echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
+                    }
                     $mysqli->real_query("SELECT CategoryID, CategoryName FROM category ORDER BY CategoryName");
                     $result = $mysqli->use_result();
-
-                    
                     while ($row = $result->fetch_row()) 
-                    {
-                        
+                    {   
+                        /**Query for the descriptions of each category*/
+                        $get_category = new mysqli("localhost", "root", "", "expensetracker");
+                        if($get_category->connect_errno)
+                        {
+                            echo "MySQL Error: " . $get_category->connect_error . "<BR/>";
+                        }
                         $query = sprintf("SELECT Description, DescriptionID FROM description WHERE CategoryID=%d AND UserID=%d",$row[0],$_SESSION['UserID']);
                         $get_category->real_query($query);
                         $cat = $get_category->use_result();
                         printf("<label for=$row[1]>$row[1]</label><BR/><BR/>");
                         printf("<div class=\"table\"><TABLE>");
                         printf("<TR><TH>Description</TH><TH>Action</TH></TR>");
-                        //printf("<textarea id=$row[1] rows=\"10\" cols=\"40\" value=$row[0] name=$row[1]>");
                         while($cat_row = $cat->fetch_row())
                         {
                             printf("<TR><TD>$cat_row[0]</TD><TD><input name=$cat_row[1] value=Delete type=\"submit\"></TD></TR>");
                         }
-                        //printf("</textarea><BR/><BR/><BR/>");
                         printf("</TABLE></div><BR/><BR/><BR/>");
+                        $get_category->close();
                     }
-                    
-
                     $mysqli->close();
-                    $mysqli2->close();
-                    $get_category->close();
-                    $delete_category->close();
-                    $help->close();
-                    
-
                      /*Test function for security*/
                     function test_input($data)
                     {

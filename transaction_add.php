@@ -3,9 +3,12 @@
 ?>
 <!DOCTYPE html>
 <html>
+<head>
     <?php
         require 'head.php';
     ?>
+    <title>ExpenseTracker - Add Transaction</title>
+</head>
 <body>
     <?php
         require 'menu.php';
@@ -18,9 +21,10 @@
          $ok = 1;    /*to check validity*/
          $submitted = 0;
         $sysMsg = "";
-        if($_SERVER['REQUEST_METHOD'] =="POST")
+        if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['add']))
         {
             $submitted = 1;
+            /**Input checks*/
             if(empty( $_POST[ 'value' ] ))
             {
                 $valMsg = " Value is required!";
@@ -58,6 +62,7 @@
             $TransactionDescription = test_input($_POST['description']);
         }
 
+        /**Insert new transaction*/
         if($submitted and $ok)
             {
                 $submitted = 0;
@@ -93,6 +98,7 @@
 
                 <label for="cat">Category</label> <span class="error"><?php echo $catMsg ?></span><BR/><BR/>
                         <?php
+                            /**Query for the radio buttons*/
                             $mysqli = new mysqli("localhost", "root", "", "expensetracker");
                             if($mysqli->connect_errno)
                             {
@@ -114,7 +120,7 @@
                 <label for="desc" >Description</label>
                 <input id="desc" type="text" name=description placeholder="Description">
 
-                <input type="submit">
+                <input type="submit" name=add>
 
                
         </form> 

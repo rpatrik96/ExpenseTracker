@@ -4,10 +4,14 @@
 
 <!DOCTYPE html>
 <html>
+<head>
     <?php
+        include 'fusioncharts/fusioncharts.php';
         require 'head.php';
         
     ?>
+    <title>ExpenseTracker - Statistics</title>
+</head>
 <body>
     <?php
         require 'menu.php';
@@ -22,8 +26,10 @@
     </form>
     
     <?php
+        /**Handle query*/
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['query']))
-        {
+        {   
+            /**MySQL query for the proper transactions -> create table from result*/
             $mysqli = new mysqli("localhost", "root", "", "expensetracker");
             if($mysqli->connect_errno)
             {
@@ -43,6 +49,8 @@
             printf("</TABLE></div>");
             echo('</div>');
             $mysqli->close();
+
+            /**Query for the chart*/
             $chart = new mysqli("localhost", "root", "", "expensetracker");
             if($chart->connect_errno)
             {

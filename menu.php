@@ -6,7 +6,7 @@
     {
         $_SESSION['logged_in'] = 0;
     }
-    
+    /**Login process*/
     if(!$_SESSION['logged_in'] and $_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['login']))
     {
         $_SESSION['logged_in'] = 0;
@@ -34,7 +34,7 @@
             $sysMsg = "<span class=\"error\">Password does not match!</span>";
         }
     }
-
+    /**Print out the menu bar*/
     echo ('
     <ul class="navbar">
         <li> <a class="active" href="index.php">Home</a> </li>
