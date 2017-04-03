@@ -63,6 +63,8 @@ INSERT INTO Category(CategoryName) VALUES ("Household");
 INSERT INTO Category(CategoryName) VALUES ("Sport");
 INSERT INTO Category(CategoryName) VALUES ("Scholarships");
 INSERT INTO Category(CategoryName) VALUES ("Salary");
+INSERT INTO Category(CategoryName) VALUES ("Electronics");
+INSERT INTO Category(CategoryName) VALUES ("Hobby");
 INSERT INTO Category(CategoryName) VALUES ("Other Expenses");
-INSERT INTO Category(CategoryName) VALUES ("Other incomes");
+INSERT INTO Category(CategoryName) VALUES ("Other Incomes");
 

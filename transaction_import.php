@@ -82,8 +82,7 @@
         {   
             /**Extract data*/
             $csv = array_map('str_getcsv', file($file));
-            /**$_SESSION variables are needed to handle the manual import on the same page*/
-            $_SESSION['csv'] = $csv;
+            $csv_other = base64_encode($file);
             $count_row = count($csv);
             $count_column = count($csv[0]);
             /*Check if ther is not a comma in the cells = the number of columns is not equal in the whole document*/
@@ -229,13 +228,15 @@
                 $duplicate_exist = 0;
             }
                 printf("</TABLE></div>");
+                $text_tmp = "<input type=\"hidden\" name=csv_hidden value=".$csv_other.">";
+                printf($text_tmp);
                 printf("<input type=\"submit\" name=add></form>");
         }
         /**Handle manual insert*/
-        /*Hidden form entry cell*/
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['add']))
         {
-            $csv = $_SESSION['csv'];
+            /*Hidden form entry cell*/
+            $csv = array_map('str_getcsv',file(base64_decode($_POST['csv_hidden'])));
             for($k=0; $k<count($csv); $k++)
             {
                 $catName = "category".$k;
@@ -252,7 +253,6 @@
                     $manual_insert->close();
                 }
             }
-            unset($_SESSION['csv']);
             $sysMsg =  "<span class=\"success\">Import was successful!</span><BR/><BR/>";
             echo $sysMsg;
         }
