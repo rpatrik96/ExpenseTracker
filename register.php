@@ -64,40 +64,56 @@
             if($submitted and $ok)
             {
                 $submitted = 0;
-                /**Insert new user*/
-                $mysqli = new mysqli("localhost", "root", "", "expensetracker");
-                if($mysqli->connect_errno)
+                /**Duplicate check*/
+                $duplicate = new mysqli("localhost", "root", "", "expensetracker");
+                if($duplicate->connect_errno)
                 {
-                    echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
+                    echo "MySQL Error: " . $duplicate->connect_error . "<BR/>";
                 }
-                $query = sprintf("INSERT INTO user(UserName, Email, Pswd) VALUES('%s','%s','%s');",
-                                $UserName, $Email, sha1($Pswd));
-                $mysqli->query($query);
-                $mysqli->close();
-
-                /**Get UserID*/
-                $getuser_num = new mysqli("localhost", "root", "", "expensetracker");
-                if($getuser_num->connect_errno)
+                $dupl_query = sprintf("SELECT * FROM user WHERE UserName='%s';",$UserName);
+                $duplicate->real_query($dupl_query);
+                $dupl_res = $duplicate->use_result();
+                if ($dupl_res->fetch_row())
                 {
-                    echo "MySQL Error: " . $getuser_num->connect_error . "<BR/>";
+                    $userMsg = "Username is used yet, please select another.";
                 }
-                $userNum = sprintf("SELECT MAX(UserID) FROM user");
-                $getuser_num->real_query($userNum);
-                $usernum_res = $getuser_num->use_result();
-                $num_res=$usernum_res->fetch_row();
-
-                /**Create default table for the user for the .csv import*/
-                $importcol = new mysqli("localhost", "root", "", "expensetracker");
-                if($importcol->connect_errno)
+                else
                 {
-                    echo "MySQL Error: " . $importcol->connect_error . "<BR/>";
-                }
-                $import_query = sprintf("INSERT INTO importcolumns(DateCol, DescCol, ValCol, UserID) VALUES (0,1,2, '%d');",$num_res[0]);
-                $getuser_num->close();
-                $importcol->query($import_query);
-                $importcol->close();
+                    /**Insert new user*/
+                    $mysqli = new mysqli("localhost", "root", "", "expensetracker");
+                    if($mysqli->connect_errno)
+                    {
+                        echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
+                    }
+                    $query = sprintf("INSERT INTO user(UserName, Email, Pswd) VALUES('%s','%s','%s');",
+                                    $UserName, $Email, sha1($Pswd));
+                    $mysqli->query($query);
+                    $mysqli->close();
 
-                $sysMsg = "<span class=\"success\">Registration process was succesful!</span><BR/><BR/>";
+                    /**Get UserID*/
+                    $getuser_num = new mysqli("localhost", "root", "", "expensetracker");
+                    if($getuser_num->connect_errno)
+                    {
+                        echo "MySQL Error: " . $getuser_num->connect_error . "<BR/>";
+                    }
+                    $userNum = sprintf("SELECT MAX(UserID) FROM user");
+                    $getuser_num->real_query($userNum);
+                    $usernum_res = $getuser_num->use_result();
+                    $num_res=$usernum_res->fetch_row();
+
+                    /**Create default table for the user for the .csv import*/
+                    $importcol = new mysqli("localhost", "root", "", "expensetracker");
+                    if($importcol->connect_errno)
+                    {
+                        echo "MySQL Error: " . $importcol->connect_error . "<BR/>";
+                    }
+                    $import_query = sprintf("INSERT INTO importcolumns(DateCol, DescCol, ValCol, UserID) VALUES (0,1,2, '%d');",$num_res[0]);
+                    $getuser_num->close();
+                    $importcol->query($import_query);
+                    $importcol->close();
+
+                    $sysMsg = "<span class=\"success\">Registration process was succesful!</span><BR/><BR/>";
+                }
             }
 
             /**Test function for security*/

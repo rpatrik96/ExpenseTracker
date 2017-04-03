@@ -232,6 +232,7 @@
                 printf("<input type=\"submit\" name=add></form>");
         }
         /**Handle manual insert*/
+        /*Hidden form entry cell*/
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['add']))
         {
             $csv = $_SESSION['csv'];

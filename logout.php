@@ -2,8 +2,8 @@
     session_start();
     if(!$_SESSION['logged_in'])
     {
-	header("Location: http://localhost:8080/ExpenseTracker/index.php");
-	exit();
+        header("Location: http://localhost:8080/ExpenseTracker/index.php");
+        exit();
     }
     unset($_SESSION['UserID']);
     unset($_SESSION['UserName']);
