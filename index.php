@@ -1,4 +1,10 @@
 <?php
+    /**
+    *@file index.php
+    *@author Patrik Reizinger
+    *@brief
+    *Index page.
+    */
     session_start();
 ?>
 <!DOCTYPE html>

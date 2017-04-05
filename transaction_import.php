@@ -1,4 +1,10 @@
 <?php
+    /**
+    *@file transaction_import.php
+    *@author Patrik Reizinger
+    *@brief
+    *Import .csv.
+    */
     session_start();
     if(!$_SESSION['logged_in'])
     {
@@ -23,7 +29,7 @@
         $sysMsg = "";
         $ok = 0;
         $csv_ok = 1;
-        /**Set columns for .csv import*/
+        /*Set columns for .csv import*/
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['setcolumns']))
         {
             $insert_col = new mysqli("localhost", "root", "", "expensetracker");
@@ -32,7 +38,7 @@
             $insert_col->close();
         }
 
-        /**Get columns for the form*/
+        /**@brief Get columns for the form*/
         $getcol = new mysqli("localhost", "root", "", "expensetracker");
         $col_query = sprintf("SELECT DateCol, DescCol, ValCol FROM importcolumns WHERE UserID=%d", $_SESSION['UserID']);
         $getcol->real_query($col_query);
@@ -43,7 +49,7 @@
         $valCol = $col_row[2];
         $getcol->close();
 
-        /**Import .csv - file upload*/
+        /*Import .csv - file upload*/
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['import']))
         {
             $ok = 1;
@@ -80,7 +86,7 @@
     <?php
         if($ok)
         {   
-            /**Extract data*/
+            /**@brief Extract data*/
             $csv = array_map('str_getcsv', file($file));
             $csv_other = base64_encode($file);
             $count_row = count($csv);
@@ -121,7 +127,7 @@
     <?php
         if($ok and $csv_ok)
         {   
-            /**Query for drop-down list*/
+            /**@brief Query for drop-down list*/
             $mysqli = new mysqli("localhost", "root", "", "expensetracker");
             if($mysqli->connect_errno)
             {
@@ -139,16 +145,16 @@
             $list = $list."</select>";
             $mysqli->close();
 
-            /**Duplicate check and auto insert*/         
+            /**@brief Duplicate check and auto insert*/         
             $duplicate_exist = 0;
             $automatically_inserted = 0;
             printf("<BR/><BR/><BR/><form  method=\"POST\" class=\"form\"><div class=\"table\"><TABLE>");
             for ($i=0; $i < $count_row ; $i++) 
             { 
-                /**Neglect header row*/
+                /*Neglect header row*/
                 if ($i)
                 {
-                    /**Get category-description pairs for a specific user*/
+                    /**@brief Get category-description pairs for a specific user*/
                     $category = new mysqli("localhost", "root", "", "expensetracker");
                     if($category->connect_errno)
                     {
@@ -160,7 +166,7 @@
 
                     while($cat_row = $cat_result->fetch_row())
                     {
-                        /**For each row make a query with read data to identify duplicates*/
+                        /**@brief For each row make a query with read data to identify duplicates*/
                         $duplicate_check = new mysqli("localhost", "root", "", "expensetracker");
                         if($duplicate_check->connect_errno)
                         {
@@ -174,7 +180,7 @@
                         {
                             if(strpos(strtoupper(str_replace(array('\'', '"'), "",$csv[$i][$descCol])), $cat_row[1] ) !== false)
                             {
-                                /**Make auto-insert*/
+                                /**@brief Make auto-insert*/
                                 $auto_insert = new mysqli("localhost", "root", "", "expensetracker");
                                 if($auto_insert->connect_errno)
                                 {
@@ -195,7 +201,7 @@
                     }
                      $category->close();
                 }
-                /**If not a duplicate and cannot be inserted automatically, create a table with the entry*/
+                /*If not a duplicate and cannot be inserted automatically, create a table with the entry*/
                 if(!$automatically_inserted and !$duplicate_exist)
                 {
                     printf("<TR>");
@@ -232,7 +238,7 @@
                 printf($text_tmp);
                 printf("<input type=\"submit\" name=add></form>");
         }
-        /**Handle manual insert*/
+        /*Handle manual insert*/
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['add']))
         {
             /*Hidden form entry cell*/
@@ -262,7 +268,7 @@
         include 'footer.php';
     ?>
     <?php
-        /**Delete .csv if column numbers not match*/
+        /*Delete .csv if column numbers not match*/
         if(!$csv_ok)
         {
             unlink($file);

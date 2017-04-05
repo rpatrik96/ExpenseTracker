@@ -1,4 +1,10 @@
 <?php
+    /**
+    *@file transaction_add.php
+    *@author Patrik Reizinger
+    *@brief
+    *Manual transaction add.
+    */
     session_start();
     if($_SESSION['logged_in']==0)
     {
@@ -23,13 +29,13 @@
         $valMsg = $dateMsg = $catMsg = "";
         /*OwnerID can not be set yet*/
         $TransactionDate = $TransactionDescription = $TransactionValue = $CategoryID = $TransactionOwnerID = "";
-         $ok = 1;    /*to check validity*/
+         $ok = 1;    /*\var to check validity*/
          $submitted = 0;
         $sysMsg = "";
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['add']))
         {
             $submitted = 1;
-            /**Input checks*/
+            /*Input checks*/
             if(empty( $_POST[ 'value' ] ))
             {
                 $valMsg = " Value is required!";
@@ -67,7 +73,7 @@
             $TransactionDescription = test_input($_POST['description']);
         }
 
-        /**Insert new transaction*/
+        /*Insert new transaction*/
         if($submitted and $ok)
             {
                 $submitted = 0;
@@ -83,7 +89,7 @@
                 $sysMsg = "<span class=\"success\">Transaction was added successfully!</span><BR/><BR/>";
             }
 
-        /**Test function for security*/
+        /**@brief Test function for security*/
         function test_input($data)
         {
             $data = trim($data);
@@ -103,7 +109,7 @@
 
                 <label for="cat">Category</label> <span class="error"><?php echo $catMsg ?></span><BR/><BR/>
                         <?php
-                            /**Query for the radio buttons*/
+                            /**@brief Query for the radio buttons*/
                             $mysqli = new mysqli("localhost", "root", "", "expensetracker");
                             if($mysqli->connect_errno)
                             {

@@ -1,4 +1,10 @@
  <?php
+    /**
+    *@file menu.php
+    *@author Patrik Reizinger
+    *@brief
+    *Print out the menu and navigation bar - dependent on the state of the user.
+    */
     $sysMsg = "";
     $row = "";
     /*First webpage entry -> variable not set*/

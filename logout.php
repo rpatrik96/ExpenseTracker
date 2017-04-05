@@ -1,4 +1,10 @@
 <?php
+    /**
+    *@file logout.php
+    *@author Patrik Reizinger
+    *@brief
+    *Logout screen.
+    */
     session_start();
     if(!$_SESSION['logged_in'])
     {

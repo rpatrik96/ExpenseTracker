@@ -1,4 +1,10 @@
 <?php
+    /**
+    *@file statistics.php
+    *@author Patrik Reizinger
+    *@brief
+    *Create statistics (table and graph).
+    */
     session_start();
     if(!$_SESSION['logged_in'])
     {
@@ -34,7 +40,7 @@
         /**Handle query*/
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['query']))
         {   
-            /**MySQL query for the proper transactions -> create table from result*/
+            /**@brief MySQL query for the proper transactions -> create table from result*/
             $mysqli = new mysqli("localhost", "root", "", "expensetracker");
             if($mysqli->connect_errno)
             {
@@ -55,7 +61,7 @@
             echo('</div>');
             $mysqli->close();
 
-            /**Query for the chart*/
+            /**@brief Query for the chart*/
             $chart = new mysqli("localhost", "root", "", "expensetracker");
             if($chart->connect_errno)
             {

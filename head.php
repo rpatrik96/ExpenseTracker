@@ -1,4 +1,10 @@
 <?php 
+    /**
+    *@file head.php
+    *@author Patrik Reizinger
+    *@brief
+    *Including icon, .css, and the FusionCharts library for the graphs.
+    */
     /**Links are including the icon, charackter set and the used graphical libraries,
     I am using FusionchartssSite XT, but the version which is 
     ONLY FOR PERSONAL, BUT NOT FOR COMMERCIAL PURPOSES

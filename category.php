@@ -1,4 +1,11 @@
 <?php
+    /**
+    *@file category.php
+    *@author Patrik Reizinger
+    *@brief
+    *The code below is responsible for the category management pro users. Keywords will be listed grouped by categories,
+    *these can be deleted also.
+    */
     session_start();
     if(!$_SESSION['logged_in'])
     {
@@ -28,7 +35,7 @@
                 
                 <?php
                     $descMsg = "";                                       
-                    /**List existing categories for the dropdown list*/
+                    /** @brief List existing categories for the dropdown list*/
                     $mysqli2 = new mysqli("localhost", "root", "", "expensetracker");
                     if($mysqli2->connect_errno)
                     {
@@ -48,7 +55,7 @@
                     printf("</select>");
                     echo('<input type="submit" name=add value=Add><BR/><BR/><BR/><BR/>');
                     $mysqli2->close();
-                    /**Handle deletes */
+                    /** @brief Handle deletes */
                     $help = new mysqli("localhost", "root", "", "expensetracker");
                     if($help->connect_errno)
                     {
@@ -61,7 +68,8 @@
                     {
                         while($help_row = $help_res->fetch_row())
                         {
-                            if(isset($_POST[$help_row[0]])) /**DescriptionID's are the identificators for the delete buttons*/
+                            /* DescriptionID's are the identificators for the delete buttons*/
+                            if(isset($_POST[$help_row[0]])) 
                             {
                                 $delete_category = new mysqli("localhost", "root", "", "expensetracker");
                                 if($delete_category->connect_errno)
@@ -76,13 +84,14 @@
                     }
                     $help->close();
 
-                    /**Handle category add*/
+                    /*Handle category add*/
                     if($_SERVER['REQUEST_METHOD'] =="POST")
                     {
                         if (isset($_POST['add']))
                             {
                                 if (!empty($_POST['desc']))
                                 {
+                                    /**@brief Insert query*/
                                     $insert = new mysqli("localhost", "root", "", "expensetracker");
                                     if($insert->connect_errno)
                                     {
@@ -102,8 +111,7 @@
                             }
                     }
 
-                    /**Create tables for the category-specific descriptions*/
-                    /**Query for categories*/
+                    /**@brief Create tables for the category-specific descriptions*/ 
                     $mysqli = new mysqli("localhost", "root", "", "expensetracker");
                     if($mysqli->connect_errno)
                     {
@@ -113,7 +121,7 @@
                     $result = $mysqli->use_result();
                     while ($row = $result->fetch_row()) 
                     {   
-                        /**Query for the descriptions of each category*/
+                        /**@brief Query for the descriptions of each category*/
                         $get_category = new mysqli("localhost", "root", "", "expensetracker");
                         if($get_category->connect_errno)
                         {
@@ -133,7 +141,7 @@
                         $get_category->close();
                     }
                     $mysqli->close();
-                     /**Test function for security*/
+                     /**@brief Test function for security*/
                     function test_input($data)
                     {
                         $data = trim($data);

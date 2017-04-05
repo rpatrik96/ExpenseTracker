@@ -1,4 +1,10 @@
 <?php
+    /**
+    *@file register.php
+    *@author Patrik Reizinger
+    *@brief
+    *Handle the registration process.
+    */
     session_start();   
 ?>
 <!DOCTYPE html>
@@ -18,8 +24,8 @@
         
             $userMsg = $mailMsg = $pswdMsg ="";
             $UserName = $Email = $Pswd = $Pswd_again ="";
-            $submitted = 0; /*to check if really submitted*/
-            $ok = 1;    /*to check validity*/
+            $submitted = 0; /*\var to check if really submitted*/
+            $ok = 1;    /*\var to check validity*/
             $sysMsg = "";
             /**Input field checks*/
             if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['register']))
@@ -64,7 +70,7 @@
             if($submitted and $ok)
             {
                 $submitted = 0;
-                /**Duplicate check*/
+                /**@brief Duplicate check*/
                 $duplicate = new mysqli("localhost", "root", "", "expensetracker");
                 if($duplicate->connect_errno)
                 {
@@ -79,7 +85,7 @@
                 }
                 else
                 {
-                    /**Insert new user*/
+                    /**@brief Insert new user*/
                     $mysqli = new mysqli("localhost", "root", "", "expensetracker");
                     if($mysqli->connect_errno)
                     {
@@ -90,7 +96,7 @@
                     $mysqli->query($query);
                     $mysqli->close();
 
-                    /**Get UserID*/
+                    /**@brief Get UserID*/
                     $getuser_num = new mysqli("localhost", "root", "", "expensetracker");
                     if($getuser_num->connect_errno)
                     {
@@ -101,7 +107,7 @@
                     $usernum_res = $getuser_num->use_result();
                     $num_res=$usernum_res->fetch_row();
 
-                    /**Create default table for the user for the .csv import*/
+                    /**@brief Create default table for the user for the .csv import*/
                     $importcol = new mysqli("localhost", "root", "", "expensetracker");
                     if($importcol->connect_errno)
                     {
@@ -116,7 +122,7 @@
                 }
             }
 
-            /**Test function for security*/
+            /**@brief Test function for security*/
             function test_input($data)
             {
                 $data = trim($data);
