@@ -12,7 +12,8 @@ CREATE TABLE User
     UserID int PRIMARY KEY auto_increment,
     UserName VARCHAR(50) NOT NULL,
     Email VARCHAR(100) NOT NULL,
-    Pswd VARCHAR(100) NOT NULL
+    Pswd VARCHAR(100) NOT NULL,
+    Theme int NOT NULL
 );
 
 CREATE TABLE Category
@@ -52,7 +53,6 @@ CREATE TABLE ImportColumns
     UserID int NOT NULL,
     foreign KEY (UserID) references User(UserID)
 );
-
 
 INSERT INTO Category(CategoryName) VALUES ("Food");
 INSERT INTO Category(CategoryName) VALUES ("Education");

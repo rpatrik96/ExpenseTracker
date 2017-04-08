@@ -33,6 +33,18 @@
         <p>
             You also have the possibility to add a list to make the automatic insert algorithm user specific.
         </p>
+        <iframe width="450" height="300" style="border:none;"
+           <?php 
+            if ($_SESSION['logged_in'] == 1) 
+            {
+                echo('src="https://www.youtube.com/embed/ETxmCCsMoD0?autoplay=1">');
+            }
+            else
+            {
+                echo('src="https://www.youtube.com/embed/ETxmCCsMoD0">');
+            }
+            ?>
+        </iframe>
     </div>
     <?php
         include 'footer.php';

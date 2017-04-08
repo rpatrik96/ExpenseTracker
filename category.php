@@ -9,8 +9,8 @@
     session_start();
     if(!$_SESSION['logged_in'])
     {
-	header("Location: http://localhost:8080/ExpenseTracker/index.php");
-	exit();
+        header("Location: http://localhost:8090/ExpenseTracker/index.php");
+        exit();
     }
 ?>
 <!DOCTYPE html>

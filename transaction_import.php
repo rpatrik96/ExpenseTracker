@@ -8,8 +8,8 @@
     session_start();
     if(!$_SESSION['logged_in'])
     {
-	header("Location: http://localhost:8080/ExpenseTracker/index.php");
-	exit();
+        header("Location: http://localhost:8090/ExpenseTracker/index.php");
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -33,6 +33,10 @@
         if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['setcolumns']))
         {
             $insert_col = new mysqli("localhost", "root", "", "expensetracker");
+            if($insert_col->connect_errno)
+            {
+                echo "MySQL Error: " . $insert_col->connect_error . "<BR/>";
+            }
             $insert_query = sprintf("UPDATE importcolumns SET DateCol='%d', DescCol='%d', ValCol='%d' WHERE UserID=%d;", max(abs($_POST['date'])-1, 0), max(abs($_POST['des'])-1,0), max(abs($_POST['val'])-1,0), $_SESSION['UserID']);
             $insert_col->query($insert_query);
             $insert_col->close();
@@ -40,6 +44,10 @@
 
         /**@brief Get columns for the form*/
         $getcol = new mysqli("localhost", "root", "", "expensetracker");
+        if($getcol->connect_errno)
+        {
+            echo "MySQL Error: " . $getcol->connect_error . "<BR/>";
+        }
         $col_query = sprintf("SELECT DateCol, DescCol, ValCol FROM importcolumns WHERE UserID=%d", $_SESSION['UserID']);
         $getcol->real_query($col_query);
         $col_res = $getcol->use_result();

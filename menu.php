@@ -21,7 +21,7 @@
         {
             echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
         }
-        $query = sprintf("SELECT UserID, UserName, Pswd FROM user WHERE UserName='%s'",$_POST['user']);
+        $query = sprintf("SELECT UserID, UserName, Pswd, Theme FROM user WHERE UserName='%s'",$_POST['user']);
         $mysqli->real_query($query);
         $result = $mysqli->use_result();
         $row = $result->fetch_row();
@@ -34,6 +34,7 @@
             $_SESSION['UserID'] = $row[0];
             $_SESSION['UserName'] = $row[1];
             $_SESSION['logged_in'] = 1;
+            $_SESSION['theme'] = $row[3];
             $submitted = 1;
         }
         else

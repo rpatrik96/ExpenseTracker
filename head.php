@@ -16,3 +16,15 @@
         <script type="text/javascript" src="fusioncharts/themes/fusioncharts.theme.carbon.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, charset=ISO-8859-1">
         <link rel="stylesheet" type="text/css" href="webpage_style.css">
+    <?php
+        if(!isset($_SESSION['theme']) or $_SESSION['theme'] == 1)
+        {
+            $_SESSION['theme'] = 1;
+            echo('<link rel="stylesheet" type="text/css" href="blue.css">');
+        }
+        if($_SESSION['theme'] == 2)
+        {
+            $_SESSION['theme'] = 1;
+            echo('<link rel="stylesheet" type="text/css" href="green.css">');
+        }
+    ?>
