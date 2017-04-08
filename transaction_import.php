@@ -104,7 +104,8 @@
             {
                     if( $count_column != count($csv[$i]))
                     {
-                        $sysMsg = sprintf("<span class=\"error\">Row $i seems to have a different number of columns, it may contain a (comma) in one of its cells, please check it and try to upload the file again.</span><BR/><BR/>");
+                        $sysMsg = sprintf("<span class=\"error\">Row $i seems to have a different number of columns, 
+                        it may contain a comma in one of its cells, please check it and try to upload the file again.</span><BR/><BR/>");
                         $csv_ok = 0;
                     }
             }

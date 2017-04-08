@@ -33,18 +33,20 @@
         <p>
             You also have the possibility to add a list to make the automatic insert algorithm user specific.
         </p>
-        <iframe width="450" height="300" style="border:none;"
+        
            <?php 
             if ($_SESSION['logged_in'] == 1) 
             {
-                echo('src="https://www.youtube.com/embed/ETxmCCsMoD0?autoplay=1">');
+                echo('<iframe width="450" height="300" style="border:none;"
+                 src="https://www.youtube.com/embed/ETxmCCsMoD0?autoplay=1"></iframe>');
             }
-            else
+            /*else
             {
-                echo('src="https://www.youtube.com/embed/ETxmCCsMoD0">');
-            }
+                echo('<iframe width="450" height="300" style="border:none;" 
+                src="https://www.youtube.com/embed/ETxmCCsMoD0"></iframe>');
+            }*/
             ?>
-        </iframe>
+        
     </div>
     <?php
         include 'footer.php';

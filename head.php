@@ -10,8 +10,7 @@
     ONLY FOR PERSONAL, BUT NOT FOR COMMERCIAL PURPOSES
     http://www.fusioncharts.com/*/
     ?>
-   
-        <link rel="shortcut icon" href="ExpenseTracker.ico">
+
         <script type="text/javascript" src="fusioncharts/fusioncharts.js"></script>
         <script type="text/javascript" src="fusioncharts/themes/fusioncharts.theme.carbon.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, charset=ISO-8859-1">
@@ -19,11 +18,13 @@
     <?php
         if(!isset($_SESSION['theme']) or $_SESSION['theme'] == 1)
         {
+            echo('<link rel="shortcut icon" href="logo_blue.ico">');
             $_SESSION['theme'] = 1;
             echo('<link rel="stylesheet" type="text/css" href="blue.css">');
         }
         if($_SESSION['theme'] == 2)
         {
+            echo('<link rel="shortcut icon" href="logo_green.ico">');
             $_SESSION['theme'] = 1;
             echo('<link rel="stylesheet" type="text/css" href="green.css">');
         }

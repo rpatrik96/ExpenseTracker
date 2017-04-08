@@ -49,7 +49,7 @@
         ');
         if(!$_SESSION['logged_in'])
         {
-        echo('<li class="right"> <a href="#About">About</a> </li>
+        echo('
         <li class="right dropdown"> <a class=" dropbtn">Login</a> 
             <form method="POST" class="dropdown-form">');
                    printf(" <label for=\"user_\">User Name</label> $sysMsg
@@ -79,7 +79,7 @@
                 <a href="#">Edit</a>
             </div> -->
         </li>');
-            printf("<li class=\"right\"> <a href=\"#About\">About</a> </li>
+            printf("
                     <li class=\"right dropdown\"> <a class=\" dropbtn\">%s</a> 
                     <form action=\"logout.php\" class=\"dropdown-form\">
                         <input type=\"submit\" value=\"Logout\">
