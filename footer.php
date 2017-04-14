@@ -15,29 +15,5 @@
         <input type="submit" style="width:20px; height:20px; background-color: rgb(0, 72, 31);padding: 0px 0px;
             margin: -20px 35px 0px 0px; float:right;" value="" name=green>
     </form></div>');
-    if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['blue']))
-    {
-        $mysqli = new mysqli("localhost", "root", "", "expensetracker");
-        if($mysqli->connect_errno)
-        {
-            echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
-        }
-        $query = sprintf("UPDATE user SET Theme='%d' WHERE UserID=%d;", 1, $_SESSION['UserID']);
-        $mysqli->query($query);
-        $mysqli->close();
-        $_SESSION['theme'] = 1;
-    }
-    if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['green']))
-    {
-        $mysqli = new mysqli("localhost", "root", "", "expensetracker");
-        if($mysqli->connect_errno)
-        {
-            echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
-        }
-        $query = sprintf("UPDATE user SET Theme='%d' WHERE UserID=%d;", 2, $_SESSION['UserID']);
-        $mysqli->query($query);
-        $mysqli->close();
-        $_SESSION['theme'] = 2;
-    }
 ?>
    

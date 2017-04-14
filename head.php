@@ -16,16 +16,51 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, charset=ISO-8859-1">
         <link rel="stylesheet" type="text/css" href="webpage_style.css">
     <?php
+        /*Theme change handle - form in footer.php*/
+        if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['blue']))
+        {
+            if($_SESSION['logged_in'])
+            {
+                $mysqli = new mysqli("localhost", "root", "", "expensetracker");
+                if($mysqli->connect_errno)
+                {
+                    echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
+                }
+                $query = sprintf("UPDATE user SET Theme='%d' WHERE UserID=%d;", 1, $_SESSION['UserID']);
+                $mysqli->query($query);
+                $mysqli->close();
+            }
+            $_SESSION['theme'] = 1;
+        }
+        if($_SERVER['REQUEST_METHOD'] =="POST" and isset($_POST['green']))
+        {
+            if($_SESSION['logged_in'])
+            {
+                $mysqli = new mysqli("localhost", "root", "", "expensetracker");
+                if($mysqli->connect_errno)
+                {
+                    echo "MySQL Error: " . $mysqli->connect_error . "<BR/>";
+                }
+                $query = sprintf("UPDATE user SET Theme='%d' WHERE UserID=%d;", 2, $_SESSION['UserID']);
+                $mysqli->query($query);
+                $mysqli->close();
+            }
+            $_SESSION['theme'] = 2;
+        }
         if(!isset($_SESSION['theme']) or $_SESSION['theme'] == 1)
         {
             echo('<link rel="shortcut icon" href="logo_blue.ico">');
-            $_SESSION['theme'] = 1;
+           // $_SESSION['theme'] = 1;
             echo('<link rel="stylesheet" type="text/css" href="blue.css">');
         }
-        if($_SESSION['theme'] == 2)
+        elseif($_SESSION['theme'] == 2)
         {
             echo('<link rel="shortcut icon" href="logo_green.ico">');
-            $_SESSION['theme'] = 1;
+           // $_SESSION['theme'] = 2;
             echo('<link rel="stylesheet" type="text/css" href="green.css">');
+        }
+        else
+        {
+            
         }
     ?>
